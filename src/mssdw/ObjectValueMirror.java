@@ -1,0 +1,70 @@
+package mssdw;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import mssdw.protocol.ObjectReference_GetAddress;
+import mssdw.protocol.ObjectReference_GetType;
+
+/**
+ * @author VISTALL
+ * @since 10.04.14
+ */
+public class ObjectValueMirror extends ValueImpl<Object> implements MirrorWithId
+{
+	private final int myId;
+	private long myAddress = -1;
+
+	public ObjectValueMirror(VirtualMachine aVm, int id)
+	{
+		super(aVm);
+		myId = id;
+	}
+
+	public long address()
+	{
+		if(myAddress == -1)
+		{
+			try
+			{
+				myAddress = ObjectReference_GetAddress.process(vm, this).address;
+			}
+			catch(JDWPException e)
+			{
+				throw e.asUncheckedException();
+			}
+		}
+		return myAddress;
+	}
+
+	@Override
+	public int id()
+	{
+		return myId;
+	}
+
+	@Override
+	public TypeMirror type()
+	{
+		try
+		{
+			return ObjectReference_GetType.process(vm, this).type;
+		}
+		catch(JDWPException e)
+		{
+			throw e.asUncheckedException();
+		}
+	}
+
+	@Nullable
+	@Override
+	public Object value()
+	{
+		return "object";
+	}
+
+	@Override
+	public void accept(@NotNull ValueVisitor valueVisitor)
+	{
+		valueVisitor.visitObjectValue(this);
+	}
+}

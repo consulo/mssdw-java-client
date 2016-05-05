@@ -1,15 +1,5 @@
 ### What is it?
 
-This is - Mono Soft Debugger Library in Java. It based on JDI OpenJDK implementation.
+This is - client of [mssdw](https://github.com/consulo/mssdw) written in Java.
 
-### Usefull links
-
-Mono:
-
- * http://www.mono-project.com/SoftDebugger:WireFormat
- * https://github.com/mono/mono/blob/4f15ef462d9f06bb4f6392f8ea5e22cba40ca379/mcs/class/Mono.Debugger.Soft/Mono.Debugger.Soft/Connection.cs
-
-Java:
-
- * http://docs.oracle.com/javase/1.5.0/docs/guide/jpda/jdwp/jdwp-protocol.html#JDWP_StackFrame_PopFrames
-
+[mono-soft-debugging](https://github.com/consulo/mono-soft-debugging) provide initial code

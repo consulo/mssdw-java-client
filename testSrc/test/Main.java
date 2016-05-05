@@ -3,19 +3,19 @@ package test;
 import java.util.List;
 import java.util.Map;
 
-import mono.debugger.LocationImpl;
-import mono.debugger.MethodMirror;
-import mono.debugger.SocketListeningConnector;
-import mono.debugger.StackFrameMirror;
-import mono.debugger.SuspendPolicy;
-import mono.debugger.TypeMirror;
-import mono.debugger.Value;
-import mono.debugger.VirtualMachineImpl;
-import mono.debugger.connect.Connector;
-import mono.debugger.event.EventSet;
-import mono.debugger.protocol.Method_GetDebugInfo;
-import mono.debugger.request.BreakpointRequest;
-import mono.debugger.request.EventRequestManager;
+import mssdw.LocationImpl;
+import mssdw.MethodMirror;
+import mssdw.SocketListeningConnector;
+import mssdw.StackFrameMirror;
+import mssdw.SuspendPolicy;
+import mssdw.TypeMirror;
+import mssdw.Value;
+import mssdw.VirtualMachineImpl;
+import mssdw.connect.Connector;
+import mssdw.event.EventSet;
+import mssdw.protocol.Method_GetDebugInfo;
+import mssdw.request.BreakpointRequest;
+import mssdw.request.EventRequestManager;
 
 /**
  * @author VISTALL
