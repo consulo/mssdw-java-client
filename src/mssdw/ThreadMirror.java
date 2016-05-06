@@ -30,25 +30,15 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import mssdw.protocol.Thread_GetFrameInfo;
-import mssdw.protocol.Thread_GetId;
 import mssdw.protocol.Thread_GetName;
 import mssdw.protocol.Thread_GetState;
-import mssdw.protocol.Thread_GetTId;
 
 public class ThreadMirror extends MirrorWithIdAndName
 {
 	public static interface ThreadState
 	{
-		int Running = 0x00000000;
-		int StopRequested = 0x00000001;
-		int SuspendRequested = 0x00000002;
-		int Background = 0x00000004;
-		int Unstarted = 0x00000008;
-		int Stopped = 0x00000010;
-		int WaitSleepJoin = 0x00000020;
-		int Suspended = 0x00000040;
-		int AbortRequested = 0x00000080;
-		int Aborted = 0x00000100;
+		int Running = 0;
+		int Suspended = 1;
 	}
 
 	ThreadMirror(VirtualMachine aVm, int aRef)
@@ -68,38 +58,6 @@ public class ThreadMirror extends MirrorWithIdAndName
 		return threadName;
 	}
 
-	/**
-	 * Return a unique identifier for this thread, multiple ThreadMirror objects
-	 * may have the same ThreadId because of appdomains.
-	 */
-	public long threadId()
-	{
-		try
-		{
-			return Thread_GetId.process(vm, this).id;
-		}
-		catch(JDWPException exc)
-		{
-			throw exc.asUncheckedException();
-		}
-	}
-
-	/**
-	 * Return the system thread id (TID) for this thread, this id is not unique since
-	 * a newly started thread might reuse a dead thread's id.
-	 */
-	public long systemThreadId()
-	{
-		try
-		{
-			return Thread_GetTId.process(vm, this).id;
-		}
-		catch(JDWPException exc)
-		{
-			throw exc.asUncheckedException();
-		}
-	}
-
 	private Thread_GetState status()
 	{
 		try
@@ -112,14 +70,14 @@ public class ThreadMirror extends MirrorWithIdAndName
 		}
 	}
 
-	public int state()
+	public boolean isRunning()
 	{
-		return status().state;
+		return status().debugState == ThreadState.Running;
 	}
 
 	public boolean isSuspended()
 	{
-		return (status().state & ThreadState.Suspended) != 0;
+		return status().debugState == ThreadState.Suspended;
 	}
 
 	@NotNull

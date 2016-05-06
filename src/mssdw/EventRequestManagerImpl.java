@@ -85,23 +85,16 @@ public class EventRequestManagerImpl extends MirrorImpl implements EventRequestM
 
 	@NotNull
 	@Override
-	public EventRequest createAppDomainCreateRequest()
+	public EventRequest createModuleLoadRequest()
 	{
-		return add(new AppDomainCreateRequest(vm, this));
+		return add(new ModuleLoadRequest(vm, this));
 	}
 
 	@NotNull
 	@Override
-	public TypeLoadRequest createTypeLoadRequest()
+	public EventRequest createModuleUnloadRequest()
 	{
-		return add(new TypeLoadRequest(vm, this));
-	}
-
-	@NotNull
-	@Override
-	public EventRequest createAppDomainUnloadRequest()
-	{
-		return add(new AppDomainUnloadRequest(vm, this));
+		return add(new ModuleUnloadRequest(vm, this));
 	}
 
 	@Override
@@ -125,14 +118,9 @@ public class EventRequestManagerImpl extends MirrorImpl implements EventRequestM
 	}
 
 	@Override
-	public BreakpointRequest createBreakpointRequest(Location location)
+	public BreakpointRequest createBreakpointRequest(String path, int line, int column)
 	{
-		validateMirror(location);
-		if(location.codeIndex() == -1)
-		{
-			throw new NativeMethodException("Cannot set breakpoints on native methods");
-		}
-		return add(new BreakpointRequest(vm, this, location));
+		return add(new BreakpointRequest(vm, this, path, line, column));
 	}
 
 	@Override
@@ -217,23 +205,16 @@ public class EventRequestManagerImpl extends MirrorImpl implements EventRequestM
 
 	@NotNull
 	@Override
-	public List<EventRequest> appDomainCreateEventRequests()
+	public List<EventRequest> moduleLoadEventRequests()
 	{
-		return (List<EventRequest>) unmodifiableRequestList(EventKind.APPDOMAIN_CREATE);
+		return (List<EventRequest>) unmodifiableRequestList(EventKind.MODULE_LOAD);
 	}
 
 	@NotNull
 	@Override
-	public List<EventRequest> appDomainUnloadEventRequests()
+	public List<EventRequest> moduleUnloadEventRequests()
 	{
-		return (List<EventRequest>) unmodifiableRequestList(EventKind.APPDOMAIN_UNLOAD);
-	}
-
-	@NotNull
-	@Override
-	public List<TypeLoadRequest> typeLoadRequests()
-	{
-		return (List<TypeLoadRequest>) unmodifiableRequestList(EventKind.TYPE_LOAD);
+		return (List<EventRequest>) unmodifiableRequestList(EventKind.MODULE_UNLOAD);
 	}
 
 	@Override

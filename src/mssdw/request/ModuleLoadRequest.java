@@ -8,9 +8,9 @@ import mssdw.VirtualMachine;
  * @author VISTALL
  * @since 11.05.14
  */
-public class AppDomainUnloadRequest extends EventRequest
+public class ModuleLoadRequest extends EventRequest
 {
-	public AppDomainUnloadRequest(VirtualMachine virtualMachine, EventRequestManagerImpl requestManager)
+	public ModuleLoadRequest(VirtualMachine virtualMachine, EventRequestManagerImpl requestManager)
 	{
 		super(virtualMachine, requestManager);
 	}
@@ -18,6 +18,6 @@ public class AppDomainUnloadRequest extends EventRequest
 	@Override
 	public EventKind eventCmd()
 	{
-		return EventKind.APPDOMAIN_UNLOAD;
+		return EventKind.MODULE_LOAD;
 	}
 }

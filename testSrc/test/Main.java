@@ -3,18 +3,15 @@ package test;
 import java.util.List;
 import java.util.Map;
 
-import mssdw.LocationImpl;
-import mssdw.MethodMirror;
-import mssdw.SocketListeningConnector;
-import mssdw.StackFrameMirror;
-import mssdw.SuspendPolicy;
-import mssdw.TypeMirror;
-import mssdw.Value;
+import mssdw.EventKind;
+import mssdw.SocketAttachingConnector;
+import mssdw.ThreadMirror;
 import mssdw.VirtualMachineImpl;
 import mssdw.connect.Connector;
+import mssdw.event.BreakpointEvent;
+import mssdw.event.Event;
 import mssdw.event.EventSet;
-import mssdw.protocol.Method_GetDebugInfo;
-import mssdw.request.BreakpointRequest;
+import mssdw.event.ModuleLoadEvent;
 import mssdw.request.EventRequestManager;
 
 /**
@@ -25,79 +22,49 @@ public class Main
 {
 	public static void main(String[] args) throws Exception
 	{
-		SocketListeningConnector socketListeningConnector = new SocketListeningConnector();
+		SocketAttachingConnector socketListeningConnector = new SocketAttachingConnector();
 
 		Map<String, Connector.Argument> argumentMap = socketListeningConnector.defaultArguments();
 
-		argumentMap.get(SocketListeningConnector.ARG_LOCALADDR).setValue("127.0.0.1");
-		argumentMap.get(SocketListeningConnector.ARG_PORT).setValue("10110");
+		argumentMap.get(SocketAttachingConnector.ARG_HOST).setValue("127.0.0.1");
+		argumentMap.get(SocketAttachingConnector.ARG_PORT).setValue("12345");
 
-		VirtualMachineImpl accept = (VirtualMachineImpl) socketListeningConnector.accept(argumentMap);
+		VirtualMachineImpl virtualMachine = (VirtualMachineImpl) socketListeningConnector.attach(argumentMap);
 
 		Thread.sleep(1000L);
 
-		accept.resume();
-		accept.suspend();
+		virtualMachine.enableEvents(EventKind.MODULE_LOAD);
 
-		TypeMirror typeMirror = accept.findTypesByQualifiedName("Program", true)[0];
+		EventRequestManager eventRequestManager = virtualMachine.eventRequestManager();
 
-		int index = 0;
-		MethodMirror m = null;
-		l:
-		for(MethodMirror methodMirror : typeMirror.methods())
-		{
-			if("Main".equals(methodMirror.name()))
-			{
-				for(Method_GetDebugInfo.Entry entry : methodMirror.debugInfo())
-				{
-					if(entry.line == 54)
-					{
-						m = methodMirror;
-						index = entry.offset;
-						break l;
-					}
-				}
-			}
-		}
-
-		EventRequestManager eventRequestManager = accept.eventRequestManager();
-
-
-		BreakpointRequest breakpointRequest = eventRequestManager.createBreakpointRequest(new LocationImpl(accept, m, index));
-		breakpointRequest.enable();
-		accept.resume();
+		virtualMachine.resume();
 
 		while(true)
 		{
-			EventSet eventSet = accept.eventQueue().remove();
-			if(eventSet.suspendPolicy() == SuspendPolicy.ALL)
+			EventSet eventSet = virtualMachine.eventQueue().remove();
+
+			Event next = eventSet.iterator().next();
+			if(next instanceof ModuleLoadEvent)
 			{
-				List<StackFrameMirror> frames = eventSet.eventThread().frames();
-
-				for(StackFrameMirror frame : frames)
+				String path = ((ModuleLoadEvent) next).getPath();
+				if(path.endsWith("TestApplication.exe"))
 				{
-					System.out.println("frame: " + frame.location().method());
-					Value value = frame.thisObject();
-
-					TypeMirror type = value.type();
-
-					if(type == null)
-					{
-						continue;
-					}
-
-					MethodMirror toString = typeMirror.findMethodByName("ToString", true);
-
-					assert toString != null;
-
-					Value<?> invoke = toString.invoke(frame.thread(), value);
-
-					System.out.println("tst: " + invoke.value());
+					eventRequestManager.createBreakpointRequest("R:\\_github.com\\consulo\\mssdw\\TestApplication\\Program.cs", 7, -1).enable();
 				}
+				virtualMachine.resume();
+
+			}
+			else if(next instanceof BreakpointEvent)
+			{
+				List<ThreadMirror> threadMirrors = virtualMachine.allThreads();
+				for(ThreadMirror threadMirror : threadMirrors)
+				{
+					System.out.println(threadMirror.name() + " " + threadMirror.isRunning() + " " + threadMirror.isSuspended());
+				}
+				System.out.println("test");
 			}
 
-
-			Thread.sleep(100L);
+			Thread.sleep(100);
 		}
 	}
 }

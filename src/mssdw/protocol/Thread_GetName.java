@@ -42,15 +42,6 @@ public class Thread_GetName implements Thread
 
 	private Thread_GetName(VirtualMachineImpl vm, PacketStream ps)
 	{
-		if(vm.traceReceives)
-		{
-			vm.printTrace("Receiving Command(id=" + ps.pkt.id + ") Thread_GetName" + (ps.pkt.flags != 0 ? ", " +
-					"FLAGS=" + ps.pkt.flags : "") + (ps.pkt.errorCode != 0 ? ", ERROR CODE=" + ps.pkt.errorCode : ""));
-		}
 		threadName = ps.readString();
-		if(vm.traceReceives)
-		{
-			vm.printReceiveTrace(4, "threadName(String): " + threadName);
-		}
 	}
 }

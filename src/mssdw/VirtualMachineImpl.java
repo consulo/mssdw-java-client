@@ -33,11 +33,9 @@ import java.util.Map;
 import org.jetbrains.annotations.NotNull;
 import mssdw.connect.spi.Connection;
 import mssdw.event.EventQueue;
-import mssdw.protocol.AppDomain_GetRootDomain;
 import mssdw.protocol.VirtualMachine_GetTypes;
 import mssdw.protocol.VirtualMachine_GetTypesForSourceFile;
 import mssdw.protocol.VirtualMachine_GetVersion;
-import mssdw.protocol.VirtualMachine_SetProtocolVersion;
 import mssdw.request.EventRequestManager;
 
 public class VirtualMachineImpl extends MirrorImpl implements VirtualMachine
@@ -58,8 +56,6 @@ public class VirtualMachineImpl extends MirrorImpl implements VirtualMachine
 	static int TRACE_RAW_RECEIVES = 0x02000000;
 
 	public boolean traceReceives = false;   // pre-compute because of frequency
-
-	private final AppDomainMirror myRootAppDomain;
 
 	// These are cached once for the life of the VM
 	private final VirtualMachine_GetVersion myVersionInfo;
@@ -120,10 +116,6 @@ public class VirtualMachineImpl extends MirrorImpl implements VirtualMachine
 			{
 				throw new IllegalArgumentException("Virtual Machine major version is not equal client: " + myVersionInfo.jdwpMajor);
 			}
-
-			VirtualMachine_SetProtocolVersion.process(vm, vmManager.majorInterfaceVersion(), vmManager.minorInterfaceVersion());
-
-			myRootAppDomain = AppDomain_GetRootDomain.process(vm).myAppDomainMirror;
 		}
 		catch(JDWPException e)
 		{
@@ -167,7 +159,7 @@ public class VirtualMachineImpl extends MirrorImpl implements VirtualMachine
 	@Override
 	public AppDomainMirror rootAppDomain()
 	{
-		return myRootAppDomain;
+		throw new UnsupportedOperationException();
 	}
 
 	@NotNull

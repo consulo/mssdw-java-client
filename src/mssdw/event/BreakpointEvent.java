@@ -45,11 +45,11 @@ import mssdw.VirtualMachine;
  * @see mssdw.request.BreakpointRequest
  * @since 1.3
  */
-public class BreakpointEvent extends LocatableEvent
+public class BreakpointEvent extends ThreadedEvent
 {
 	public BreakpointEvent(VirtualMachine virtualMachine, JDWP.Event.Composite.Events.Breakpoint evt)
 	{
-		super(virtualMachine, evt, evt.requestID, evt.thread, evt.location);
+		super(virtualMachine, evt, evt.requestID, evt.thread);
 	}
 
 	@Override

@@ -6,11 +6,11 @@ import mssdw.VirtualMachine;
 
 /**
  * @author VISTALL
- * @since 24.04.14
+ * @since 11.05.14
  */
-public class TypeLoadRequest extends TypeVisibleEventRequest
+public class ModuleUnloadRequest extends EventRequest
 {
-	public TypeLoadRequest(VirtualMachine virtualMachine, EventRequestManagerImpl requestManager)
+	public ModuleUnloadRequest(VirtualMachine virtualMachine, EventRequestManagerImpl requestManager)
 	{
 		super(virtualMachine, requestManager);
 	}
@@ -18,6 +18,6 @@ public class TypeLoadRequest extends TypeVisibleEventRequest
 	@Override
 	public EventKind eventCmd()
 	{
-		return EventKind.TYPE_LOAD;
+		return EventKind.MODULE_UNLOAD;
 	}
 }

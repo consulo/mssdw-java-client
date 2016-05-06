@@ -55,15 +55,6 @@ public class JDWP
 
 			private AllThreads(VirtualMachineImpl vm, PacketStream ps)
 			{
-				if(vm.traceReceives)
-				{
-					vm.printTrace("Receiving Command(id=" + ps.pkt.id + ") JDWP.VirtualMachine.AllThreads" + (ps.pkt.flags != 0 ? ", " +
-							"FLAGS=" + ps.pkt.flags : "") + (ps.pkt.errorCode != 0 ? ", ERROR CODE=" + ps.pkt.errorCode : ""));
-				}
-				if(vm.traceReceives)
-				{
-					vm.printReceiveTrace(4, "threads(ThreadMirror[]): " + "");
-				}
 				int threadsCount = ps.readInt();
 				threads = new ThreadMirror[threadsCount];
 				for(int i = 0; i < threadsCount; i++)
@@ -607,6 +598,35 @@ public class JDWP
 						}
 					}
 				}
+
+				public static class BreakpointLocation extends ModifierCommon
+				{
+					static final byte ALT_ID = 50;
+
+					public static Modifier create(String path, int lineNumber, int columnNumber)
+					{
+						return new Modifier(ALT_ID, new BreakpointLocation(path, lineNumber, columnNumber));
+					}
+
+					private String myPath;
+					private int myLineNumber;
+					private int myColumnNumber;
+
+					public BreakpointLocation(String path, int lineNumber, int columnNumber)
+					{
+						myPath = path;
+						myLineNumber = lineNumber;
+						myColumnNumber = columnNumber;
+					}
+
+					@Override
+					void write(PacketStream ps, VirtualMachineImpl vm)
+					{
+						ps.writeString(myPath);
+						ps.writeInt(myLineNumber);
+						ps.writeInt(myColumnNumber);
+					}
+				}
 			}
 
 			public static Set process(VirtualMachineImpl vm, byte eventKind, int suspendPolicy, Modifier[] modifiers) throws JDWPException
@@ -880,17 +900,11 @@ public class JDWP
 						case THREAD_DEATH:
 							aEventsCommon = new ThreadDeath(vm, ps);
 							break;
-						case APPDOMAIN_CREATE:
-							aEventsCommon = new AppDomainCreate(vm, ps);
+						case MODULE_LOAD:
+							aEventsCommon = new ModuleLoad(vm, ps);
 							break;
-						case APPDOMAIN_UNLOAD:
-							aEventsCommon = new AppDomainUnload(vm, ps);
-							break;
-						case ASSEMBLY_LOAD:
-							aEventsCommon = new AssemblyLoad(vm, ps);
-							break;
-						case ASSEMBLY_UNLOAD:
-							aEventsCommon = new AssemblyUnLoad(vm, ps);
+						case MODULE_UNLOAD:
+							aEventsCommon = new ModuleUnload(vm, ps);
 							break;
 						case USER_BREAK:
 							aEventsCommon = new UserBreak(vm, ps);
@@ -900,9 +914,6 @@ public class JDWP
 							break;
 						case VM_DEATH:
 							aEventsCommon = new VMDeath(vm, ps);
-							break;
-						case TYPE_LOAD:
-							aEventsCommon = new TypeLoad(vm, ps);
 							break;
 						default:
 							System.out.println("Unknown EventKind: " + eventKind);
@@ -996,16 +1007,11 @@ public class JDWP
 					 */
 					public final ThreadMirror thread;
 
-					/**
-					 * Location hit
-					 */
-					public final Location location;
 
 					Breakpoint(VirtualMachineImpl vm, PacketStream ps)
 					{
 						requestID = ps.readInt();
 						thread = ps.readThreadMirror();
-						location = ps.readLocation();
 					}
 				}
 
@@ -1067,36 +1073,6 @@ public class JDWP
 					}
 				}
 
-				public static class TypeLoad extends EventsCommon
-				{
-					@Override
-					EventKind eventKind()
-					{
-						return EventKind.TYPE_LOAD;
-					}
-
-					/**
-					 * Request that generated event
-					 */
-					public final int requestID;
-
-					/**
-					 * Thread which exited method
-					 */
-					public final ThreadMirror thread;
-
-					/**
-					 * Location of exit
-					 */
-					public final TypeMirror typeMirror;
-
-					TypeLoad(VirtualMachineImpl vm, PacketStream ps)
-					{
-						requestID = ps.readInt();
-						thread = ps.readThreadMirror();
-						typeMirror = ps.readTypeMirror();
-					}
-				}
 
 				/**
 				 * Notification of an exception in the target VM.
@@ -1208,82 +1184,41 @@ public class JDWP
 					}
 				}
 
-				public static class AppDomainCreate extends EventsCommon
+				public static class ModuleLoad extends EventsCommon
 				{
 					@Override
 					EventKind eventKind()
 					{
-						return EventKind.APPDOMAIN_CREATE;
+						return EventKind.MODULE_LOAD;
 					}
 
 					public final int requestID;
 
-					public final ThreadMirror thread;
+					public final String path;
 
-					public final AppDomainMirror appDomainMirror;
-
-					public AppDomainCreate(VirtualMachineImpl vm, PacketStream ps)
+					public ModuleLoad(VirtualMachineImpl vm, PacketStream ps)
 					{
 						requestID = ps.readInt();
-						thread = ps.readThreadMirror();
-						appDomainMirror = ps.readAppDomainMirror();
+						path = ps.readString();
 					}
 				}
 
-				public static class AppDomainUnload extends EventsCommon
+				public static class ModuleUnload extends EventsCommon
 				{
 					@Override
 					EventKind eventKind()
 					{
-						return EventKind.APPDOMAIN_UNLOAD;
+						return EventKind.MODULE_UNLOAD;
 					}
 
 					public final int requestID;
 
-					public final ThreadMirror thread;
+					public final String path;
 
-					public final AppDomainMirror appDomainMirror;
-
-					public AppDomainUnload(VirtualMachineImpl vm, PacketStream ps)
+					public ModuleUnload(VirtualMachineImpl vm, PacketStream ps)
 					{
 						requestID = ps.readInt();
-						thread = ps.readThreadMirror();
-						appDomainMirror = ps.readAppDomainMirror();
-					}
-				}
-
-				public static class AssemblyLoad extends EventsCommon
-				{
-					@Override
-					EventKind eventKind()
-					{
-						return EventKind.ASSEMBLY_LOAD;
-					}
-
-					/**
-					 * Request that generated event
-					 */
-					public final int requestID;
-
-					public final ThreadMirror thread;
-
-					public final AssemblyMirror assembly;
-
-
-					public AssemblyLoad(VirtualMachineImpl vm, PacketStream ps)
-					{
-						requestID = ps.readInt();
-						if(vm.traceReceives)
-						{
-							vm.printReceiveTrace(6, "requestID(int): " + requestID);
-						}
-						thread = ps.readThreadMirror();
-
-						assembly = ps.readAssemblyMirror();
-						if(vm.traceReceives)
-						{
-							vm.printReceiveTrace(6, "assembly(AssemblyReferene): " + (assembly == null ? "NULL" : "ref=" + assembly.id()));
-						}
+						path = ps.readString();
 					}
 				}
 
@@ -1330,40 +1265,6 @@ public class JDWP
 					}
 				}
 
-				public static class AssemblyUnLoad extends EventsCommon
-				{
-					@Override
-					EventKind eventKind()
-					{
-						return EventKind.ASSEMBLY_UNLOAD;
-					}
-
-					/**
-					 * Request that generated event
-					 */
-					public final int requestID;
-
-					public final ThreadMirror thread;
-
-					public final AssemblyMirror assembly;
-
-					public AssemblyUnLoad(VirtualMachineImpl vm, PacketStream ps)
-					{
-						requestID = ps.readInt();
-						if(vm.traceReceives)
-						{
-							vm.printReceiveTrace(6, "requestID(int): " + requestID);
-						}
-						thread = ps.readThreadMirror();
-
-						assembly = ps.readAssemblyMirror();
-						if(vm.traceReceives)
-						{
-							vm.printReceiveTrace(6, "assembly(AssemblyReferene): " + (assembly == null ? "NULL" : "ref=" + assembly.id()));
-						}
-					}
-				}
-
 				public static class VMDeath extends EventsCommon
 				{
 					@Override
@@ -1398,20 +1299,7 @@ public class JDWP
 
 			Composite(VirtualMachineImpl vm, PacketStream ps)
 			{
-				if(vm.traceReceives)
-				{
-					vm.printTrace("Receiving Command(id=" + ps.pkt.id + ") JDWP.Event.Composite" + (ps.pkt.flags != 0 ? ", " +
-							"FLAGS=" + ps.pkt.flags : "") + (ps.pkt.errorCode != 0 ? ", ERROR CODE=" + ps.pkt.errorCode : ""));
-				}
 				suspendPolicy = ps.readByte();
-				if(vm.traceReceives)
-				{
-					vm.printReceiveTrace(4, "suspendPolicy(byte): " + suspendPolicy);
-				}
-				if(vm.traceReceives)
-				{
-					vm.printReceiveTrace(4, "events(Events[]): " + "");
-				}
 				int eventsCount = ps.readInt();
 				events = new Events[eventsCount];
 				for(int i = 0; i < eventsCount; i++)

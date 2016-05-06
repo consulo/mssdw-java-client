@@ -54,13 +54,11 @@ import mssdw.VirtualMachine;
 public interface EventRequestManager extends Mirror
 {
 	@NotNull
-	EventRequest createAppDomainCreateRequest();
+	EventRequest createModuleLoadRequest();
 
 	@NotNull
-	EventRequest createAppDomainUnloadRequest();
+	EventRequest createModuleUnloadRequest();
 
-	@NotNull
-	TypeLoadRequest createTypeLoadRequest();
 
 	/**
 	 * Creates a new disabled {@link ThreadStartRequest}.
@@ -186,7 +184,7 @@ public interface EventRequestManager extends Mirror
 	 * @return the created {@link BreakpointRequest}
 	 * @throws NativeMethodException if location is within a native method.
 	 */
-	BreakpointRequest createBreakpointRequest(Location location);
+	BreakpointRequest createBreakpointRequest(String path, int line, int column);
 
 	/**
 	 * Creates a new disabled {@link VMDeathRequest}.
@@ -342,11 +340,8 @@ public interface EventRequestManager extends Mirror
 	List<VMDeathRequest> vmDeathRequests();
 
 	@NotNull
-	List<EventRequest> appDomainCreateEventRequests();
+	List<EventRequest> moduleLoadEventRequests();
 
 	@NotNull
-	List<EventRequest> appDomainUnloadEventRequests();
-
-	@NotNull
-	List<TypeLoadRequest> typeLoadRequests();
+	List<EventRequest> moduleUnloadEventRequests();
 }

@@ -227,10 +227,10 @@ public class EventSetImpl extends ArrayList<Event> implements EventSet
 		JDWP.Event.Composite.Events.EventsCommon comm = evt.aEventsCommon;
 		switch(evt.eventKind)
 		{
-			case APPDOMAIN_CREATE:
-				return new AppDomainCreateEvent(vm, (JDWP.Event.Composite.Events.AppDomainCreate) comm);
-			case APPDOMAIN_UNLOAD:
-				return new AppDomainUnloadEvent(vm, (JDWP.Event.Composite.Events.AppDomainUnload) comm);
+			case MODULE_LOAD:
+				return new ModuleLoadEvent(vm, (JDWP.Event.Composite.Events.ModuleLoad) comm);
+			case MODULE_UNLOAD:
+				return new ModuleUnloadEvent(vm, (JDWP.Event.Composite.Events.ModuleUnload) comm);
 			case THREAD_START:
 				return new ThreadStartEvent(vm, (JDWP.Event.Composite.Events.ThreadStart) comm);
 			case THREAD_DEATH:
@@ -243,14 +243,8 @@ public class EventSetImpl extends ArrayList<Event> implements EventSet
 				return new MethodEntryEvent(vm, (JDWP.Event.Composite.Events.MethodEntry) comm);
 			case METHOD_EXIT:
 				return new MethodExitEvent(vm, (JDWP.Event.Composite.Events.MethodExit) comm);
-			case TYPE_LOAD:
-				return new TypeLoadEvent(vm, (JDWP.Event.Composite.Events.TypeLoad) comm);
 			case STEP:
 				return new StepEvent(vm, (JDWP.Event.Composite.Events.Step) comm);
-			case ASSEMBLY_LOAD:
-				return new AssemblyLoadEvent(vm, (JDWP.Event.Composite.Events.AssemblyLoad) comm);
-			case ASSEMBLY_UNLOAD:
-				return new AssemblyUnloadEvent(vm, (JDWP.Event.Composite.Events.AssemblyUnLoad) comm);
 			case VM_START:
 				return new VMStartEvent(vm, (JDWP.Event.Composite.Events.VMStart) comm);
 			case VM_DEATH:

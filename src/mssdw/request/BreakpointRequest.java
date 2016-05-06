@@ -52,18 +52,17 @@ import mssdw.VirtualMachine;
  */
 public class BreakpointRequest extends TypeVisibleEventRequest
 {
-	private final Location location;
+	private String myPath;
+	private int myLine;
+	private int myColumn;
 
-	public BreakpointRequest(VirtualMachine virtualMachine, EventRequestManagerImpl requestManager, Location location)
+	public BreakpointRequest(VirtualMachine virtualMachine, EventRequestManagerImpl requestManager, String path, int line, int column)
 	{
 		super(virtualMachine, requestManager);
-		this.location = location;
-		filters.add(0, JDWP.EventRequest.Set.Modifier.LocationOnly.create(location));
-	}
-
-	public Location location()
-	{
-		return location;
+		myPath = path;
+		myLine = line;
+		myColumn = column;
+		filters.add(0, JDWP.EventRequest.Set.Modifier.BreakpointLocation.create(path, line, column));
 	}
 
 	@Override
@@ -75,6 +74,6 @@ public class BreakpointRequest extends TypeVisibleEventRequest
 	@Override
 	public String toString()
 	{
-		return "breakpoint request " + location() + state();
+		return "breakpoint request at " + myPath + ":" + myLine + ":" + myColumn + " " + state();
 	}
 }

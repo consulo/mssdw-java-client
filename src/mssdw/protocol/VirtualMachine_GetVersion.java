@@ -49,25 +49,8 @@ public class VirtualMachine_GetVersion implements VirtualMachine
 
 	private VirtualMachine_GetVersion(VirtualMachineImpl vm, PacketStream ps)
 	{
-		if(vm.traceReceives)
-		{
-			vm.printTrace("Receiving Command(id=" + ps.pkt.id + ") VirtualMachine_GetVersion" + (ps.pkt.flags != 0 ? ", " +
-					"FLAGS=" + ps.pkt.flags : "") + (ps.pkt.errorCode != 0 ? ", ERROR CODE=" + ps.pkt.errorCode : ""));
-		}
 		description = ps.readString();
-		if(vm.traceReceives)
-		{
-			vm.printReceiveTrace(4, "description(String): " + description);
-		}
 		jdwpMajor = ps.readInt();
-		if(vm.traceReceives)
-		{
-			vm.printReceiveTrace(4, "jdwpMajor(int): " + jdwpMajor);
-		}
 		jdwpMinor = ps.readInt();
-		if(vm.traceReceives)
-		{
-			vm.printReceiveTrace(4, "jdwpMinor(int): " + jdwpMinor);
-		}
 	}
 }

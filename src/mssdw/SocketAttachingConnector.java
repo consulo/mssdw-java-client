@@ -38,9 +38,8 @@ import mssdw.connect.Transport;
  */
 public class SocketAttachingConnector extends GenericAttachingConnector
 {
-
-	static final String ARG_PORT = "port";
-	static final String ARG_HOST = "hostname";
+	public static final String ARG_PORT = "port";
+	public static final String ARG_HOST = "hostname";
 
 	public SocketAttachingConnector()
 	{

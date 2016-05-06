@@ -33,19 +33,12 @@ public class Thread_GetState implements Thread
 		return new Thread_GetState(vm, ps);
 	}
 
-	public final int state;
+	public final int debugState;
+	public final int userState;
 
 	private Thread_GetState(VirtualMachineImpl vm, PacketStream ps)
 	{
-		if(vm.traceReceives)
-		{
-			vm.printTrace("Receiving Command(id=" + ps.pkt.id + ") Thread_GetState" + (ps.pkt.flags != 0 ? ", " +
-					"FLAGS=" + ps.pkt.flags : "") + (ps.pkt.errorCode != 0 ? ", ERROR CODE=" + ps.pkt.errorCode : ""));
-		}
-		state = ps.readInt();
-		if(vm.traceReceives)
-		{
-			vm.printReceiveTrace(4, "state(int): " + state);
-		}
+		debugState = ps.readInt();
+		userState = ps.readInt();
 	}
 }

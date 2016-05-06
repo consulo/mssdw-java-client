@@ -1,3 +1,3 @@
-mono --debug --debugger-agent=transport=dt_socket,address=127.0.0.1:10110,suspend=y,server=n XDotNetTest.exe test test2
+R:\_github.com\consulo\mssdw\out\production\mssdw\mssdw.exe --port=12345 R:\_github.com\consulo\mssdw\out\production\TestApplication\TestApplication.exe
 
 pause

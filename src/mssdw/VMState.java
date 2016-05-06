@@ -198,8 +198,7 @@ class VMState {
                 threads = local.threads;
             }
             if (threads == null) {
-                threads = Arrays.asList((ThreadMirror[])JDWP.VirtualMachine.AllThreads.
-                                        process(vm).threads);
+                threads = Arrays.asList((ThreadMirror[])JDWP.VirtualMachine.AllThreads.process(vm).threads);
                 if (local != null) {
                     local.threads = threads;
                 }

@@ -130,7 +130,7 @@ public class SocketTransportService extends TransportService {
     void handshake(Socket s, long timeout) throws IOException {
         s.setSoTimeout((int)timeout);
 
-        byte[] hello = "DWP-Handshake".getBytes("UTF-8");
+        byte[] hello = "MDWP-Handshake".getBytes("UTF-8");
         s.getOutputStream().write(hello);
 
         byte[] b = new byte[hello.length];
