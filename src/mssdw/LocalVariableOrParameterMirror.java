@@ -8,23 +8,33 @@ import org.jetbrains.annotations.NotNull;
  */
 public abstract class LocalVariableOrParameterMirror  extends MirrorWithIdAndName
 {
-	private final TypeMirror myType;
 	private final String myName;
+	private final TypeRef myTypeRef;
 
-	public LocalVariableOrParameterMirror(VirtualMachineImpl vm, int i, TypeMirror type, String name)
+	private TypeMirror myType;
+
+	public LocalVariableOrParameterMirror(VirtualMachineImpl vm, int i, TypeRef typeRef, String name)
 	{
 		super(vm, i);
-		myType = type;
+		myTypeRef = typeRef;
 		myName = name;
 	}
 
 	@NotNull
 	public TypeMirror type()
 	{
-		return myType;
+		if(myType != null)
+		{
+			return myType;
+		}
+		return myType = new TypeMirror(virtualMachine(), myTypeRef);
 	}
 
-	public abstract int idForStackFrame();
+	@Deprecated
+	public int idForStackFrame()
+	{
+		return id();
+	}
 
 	@NotNull
 	@Override

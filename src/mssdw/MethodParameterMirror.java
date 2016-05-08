@@ -6,14 +6,8 @@ package mssdw;
  */
 public class MethodParameterMirror extends LocalVariableOrParameterMirror
 {
-	public MethodParameterMirror(VirtualMachineImpl vm, int i, TypeMirror type, String name)
+	public MethodParameterMirror(VirtualMachineImpl vm, int i, TypeRef type, String name)
 	{
 		super(vm, i, type, name);
-	}
-
-	@Override
-	public int idForStackFrame()
-	{
-		return (int) -(id() + 1);
 	}
 }

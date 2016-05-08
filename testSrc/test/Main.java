@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import mssdw.EventKind;
+import mssdw.LocalVariableMirror;
 import mssdw.MethodMirror;
 import mssdw.SocketAttachingConnector;
 import mssdw.StackFrameMirror;
@@ -51,7 +52,7 @@ public class Main
 				String path = ((ModuleLoadEvent) next).getPath();
 				if(path.endsWith("TestApplication.exe"))
 				{
-					eventRequestManager.createBreakpointRequest("R:\\_github.com\\consulo\\mssdw\\TestApplication\\Program.cs", 7, -1).enable();
+					eventRequestManager.createBreakpointRequest("R:\\_github.com\\consulo\\mssdw\\TestApplication\\Program.cs", 10, -1).enable();
 				}
 				virtualMachine.resume();
 
@@ -66,6 +67,8 @@ public class Main
 					for(StackFrameMirror frame : frames)
 					{
 						MethodMirror method = frame.getMethod();
+
+						LocalVariableMirror[] locals = method.locals(frame);
 
 						System.out.println("> " + method.name() + " " + frame.getFilePath());
 					}

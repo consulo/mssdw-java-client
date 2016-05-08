@@ -5,6 +5,7 @@ import mssdw.MethodMirror;
 import mssdw.MethodParameterMirror;
 import mssdw.PacketStream;
 import mssdw.TypeMirror;
+import mssdw.TypeRef;
 import mssdw.VirtualMachineImpl;
 
 /**
@@ -48,10 +49,10 @@ public class Method_GetParamInfo implements Method
 		returnType = ps.readTypeMirror();
 
 		parameters = new MethodParameterMirror[parameterCount];
-		TypeMirror[] parameterTypes = new TypeMirror[parameterCount];
+		TypeRef[] parameterTypes = new TypeRef[parameterCount];
 		for(int i = 0; i < parameterCount; i++)
 		{
-			parameterTypes[i] = ps.readTypeMirror();
+			parameterTypes[i] = ps.readTypeRef();
 		}
 
 		for(int i = 0; i < parameterCount; i++)

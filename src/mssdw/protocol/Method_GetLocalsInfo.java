@@ -4,7 +4,8 @@ import mssdw.JDWPException;
 import mssdw.LocalVariableMirror;
 import mssdw.MethodMirror;
 import mssdw.PacketStream;
-import mssdw.TypeMirror;
+import mssdw.StackFrameMirror;
+import mssdw.TypeRef;
 import mssdw.VirtualMachineImpl;
 
 /**
@@ -15,16 +16,19 @@ public class Method_GetLocalsInfo implements Method
 {
 	static final int COMMAND = 5;
 
-	public static Method_GetLocalsInfo process(VirtualMachineImpl vm, MethodMirror methodMirror) throws JDWPException
+	public static Method_GetLocalsInfo process(VirtualMachineImpl vm, MethodMirror methodMirror, StackFrameMirror stackFrameMirror) throws JDWPException
 	{
-		PacketStream ps = enqueueCommand(vm, methodMirror);
+		PacketStream ps = enqueueCommand(vm, methodMirror, stackFrameMirror);
 		return waitForReply(vm, ps);
 	}
 
-	static PacketStream enqueueCommand(VirtualMachineImpl vm, MethodMirror methodMirror)
+	static PacketStream enqueueCommand(VirtualMachineImpl vm, MethodMirror methodMirror, StackFrameMirror stackFrameMirror)
 	{
 		PacketStream ps = new PacketStream(vm, COMMAND_SET, COMMAND);
-		ps.writeId(methodMirror);
+		ps.writeTypeRef(methodMirror.getTypeRef());
+		ps.writeInt(methodMirror.id());
+		ps.writeInt(stackFrameMirror.thread().id());
+		ps.writeInt(stackFrameMirror.id());
 		ps.send();
 		return ps;
 	}
@@ -42,29 +46,13 @@ public class Method_GetLocalsInfo implements Method
 		int size = ps.readInt();
 
 		this.localVariables = new LocalVariableMirror[size];
-		TypeMirror[] parameterTypes = new TypeMirror[size];
-		String[] names = new String[size];
-		int[] liveRangeStart = new int[size];
-		int[] liveRangeEnd = new int[size];
-		for(int i = 0; i < size; i++)
-		{
-			parameterTypes[i] = ps.readTypeMirror();
-		}
 
 		for(int i = 0; i < size; i++)
 		{
-			names[i] = ps.readString();
-		}
-
-		for(int i = 0; i < size; i++)
-		{
-			liveRangeStart[i] = ps.readInt();
-			liveRangeEnd[i] = ps.readInt();
-		}
-
-		for(int i = 0; i < size; i++)
-		{
-			localVariables[i] = new LocalVariableMirror(vm, i, parameterTypes[i], names[i], liveRangeStart[i], liveRangeEnd[i]);
+			int index = ps.readInt();
+			String name = ps.readString();
+			TypeRef typeRef = ps.readTypeRef();
+			localVariables[i] = new LocalVariableMirror(vm, index, typeRef, name);
 		}
 	}
 }

@@ -74,7 +74,7 @@ public class MethodMirror extends CustomAttributeMirrorOwner implements MirrorWi
 		}
 	}
 
-	private Method_GetLocalsInfo localsInfo()
+	private Method_GetLocalsInfo localsInfo(StackFrameMirror stackFrameMirror)
 	{
 		if(myLocalsInfo != null)
 		{
@@ -82,7 +82,7 @@ public class MethodMirror extends CustomAttributeMirrorOwner implements MirrorWi
 		}
 		try
 		{
-			return myLocalsInfo = Method_GetLocalsInfo.process(vm, this);
+			return myLocalsInfo = Method_GetLocalsInfo.process(vm, this, stackFrameMirror);
 		}
 		catch(JDWPException e)
 		{
@@ -157,24 +157,22 @@ public class MethodMirror extends CustomAttributeMirrorOwner implements MirrorWi
 	}
 
 	@NotNull
-	public LocalVariableMirror[] locals()
+	public LocalVariableMirror[] locals(@NotNull StackFrameMirror stackFrameMirror)
 	{
-		return localsInfo().localVariables;
-	}
-
-	@NotNull
-	public LocalVariableMirror[] locals(long index)
-	{
-		LocalVariableMirror[] locals = locals();
-		List<LocalVariableMirror> localVariableMirrors = new ArrayList<LocalVariableMirror>(locals.length);
-		for(LocalVariableMirror local : locals)
+		try
 		{
-			if(index >= local.liveRangeStart() && index <= local.liveRangeEnd())
+			LocalVariableMirror[] locals = Method_GetLocalsInfo.process(vm, this, stackFrameMirror).localVariables;
+			List<LocalVariableMirror> localVariableMirrors = new ArrayList<LocalVariableMirror>(locals.length);
+			for(LocalVariableMirror local : locals)
 			{
 				localVariableMirrors.add(local);
 			}
+			return localVariableMirrors.toArray(new LocalVariableMirror[localVariableMirrors.size()]);
 		}
-		return localVariableMirrors.toArray(new LocalVariableMirror[localVariableMirrors.size()]);
+		catch(JDWPException e)
+		{
+			throw e.asUncheckedException();
+		}
 	}
 
 	@Override
