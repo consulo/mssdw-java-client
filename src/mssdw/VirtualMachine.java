@@ -76,18 +76,6 @@ public interface VirtualMachine extends Mirror
 	AppDomainMirror rootAppDomain();
 
 	/**
-	 * @since 2.9
-	 */
-	@NotNull
-	TypeMirror[] findTypesByQualifiedName(String typeName, boolean ignoreCase);
-
-	/**
-	 * @since 2.7
-	 */
-	@NotNull
-	TypeMirror[] findTypesBySourcePath(String sourcePath, boolean ignoreCase);
-
-	/**
 	 * Returns a list of the currently running threads. For each
 	 * running thread in the target VM, a {@link ThreadMirror}
 	 * that mirrors it is placed in the list.

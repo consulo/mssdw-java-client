@@ -30,8 +30,6 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import mssdw.connect.spi.Connection;
 import mssdw.event.EventQueue;
-import mssdw.protocol.VirtualMachine_GetTypes;
-import mssdw.protocol.VirtualMachine_GetTypesForSourceFile;
 import mssdw.protocol.VirtualMachine_GetVersion;
 import mssdw.request.EventRequestManager;
 
@@ -152,36 +150,6 @@ public class VirtualMachineImpl extends MirrorImpl implements VirtualMachine
 	public AppDomainMirror rootAppDomain()
 	{
 		throw new UnsupportedOperationException();
-	}
-
-	@NotNull
-	@Override
-	public TypeMirror[] findTypesByQualifiedName(String typeName, boolean ignoreCase)
-	{
-		checkVersion(2, 9);
-		try
-		{
-			return VirtualMachine_GetTypes.process(vm, typeName, ignoreCase).types;
-		}
-		catch(JDWPException exc)
-		{
-			throw exc.asUncheckedException();
-		}
-	}
-
-	@NotNull
-	@Override
-	public TypeMirror[] findTypesBySourcePath(String sourcePath, boolean ignoreCase)
-	{
-		checkVersion(2, 7);
-		try
-		{
-			return VirtualMachine_GetTypesForSourceFile.process(vm, sourcePath, ignoreCase).types;
-		}
-		catch(JDWPException exc)
-		{
-			throw exc.asUncheckedException();
-		}
 	}
 
 	@NotNull
