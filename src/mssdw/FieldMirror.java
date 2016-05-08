@@ -16,14 +16,13 @@ import mssdw.util.ImmutablePair;
  */
 public class FieldMirror extends FieldOrPropertyMirror
 {
-	@NotNull
-	private final TypeMirror myTypeMirror;
+	private final TypeRef myTypeRef;
+	private TypeMirror myTypeMirror;
 
-	public FieldMirror(
-			@NotNull VirtualMachine aVm, int id, @NotNull String name, @NotNull TypeMirror typeMirror, @NotNull TypeMirror parent, int attributes)
+	public FieldMirror(@NotNull VirtualMachine aVm, int id, @NotNull String name, @NotNull TypeRef typeRef, @NotNull TypeMirror parent, int attributes)
 	{
 		super(aVm, id, parent, attributes, name);
-		myTypeMirror = typeMirror;
+		myTypeRef = typeRef;
 	}
 
 	@Override
@@ -83,7 +82,11 @@ public class FieldMirror extends FieldOrPropertyMirror
 	@NotNull
 	public TypeMirror type()
 	{
-		return myTypeMirror;
+		if(myTypeMirror != null)
+		{
+			return myTypeMirror;
+		}
+		return myTypeMirror = new TypeMirror(virtualMachine(), myTypeRef);
 	}
 
 	@NotNull

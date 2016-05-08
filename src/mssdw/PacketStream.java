@@ -452,8 +452,8 @@ public class PacketStream
 	@NotNull
 	public TypeRef readTypeRef()
 	{
-		int moduleId = readId();
-		int classId = readId();
+		int moduleId = readInt();
+		int classId = readInt();
 		boolean isPointer = readByteBool();
 		boolean isByRef = readByteBool();
 		int arraySizesLen = readByte();
@@ -471,7 +471,7 @@ public class PacketStream
 		return new TypeRef(moduleId, classId, isPointer, isByRef, arraySizes, arrayLowerBounds);
 	}
 
-	public void writeTypeRef(@Nullable TypeRef typeRef)
+	public void writeTypeRef(@NotNull TypeRef typeRef)
 	{
 		writeInt(typeRef.getModuleNameId());
 		writeInt(typeRef.getClassToken());

@@ -4,6 +4,7 @@ import mssdw.FieldMirror;
 import mssdw.JDWPException;
 import mssdw.PacketStream;
 import mssdw.TypeMirror;
+import mssdw.TypeRef;
 import mssdw.VirtualMachineImpl;
 
 /**
@@ -23,7 +24,7 @@ public class Type_GetFields implements Type
 	static PacketStream enqueueCommand(VirtualMachineImpl vm, TypeMirror typeMirror)
 	{
 		PacketStream ps = new PacketStream(vm, COMMAND_SET, COMMAND);
-		ps.writeId(typeMirror);
+		ps.writeTypeRef(typeMirror.getTypeRef());
 		ps.send();
 		return ps;
 	}
@@ -42,11 +43,11 @@ public class Type_GetFields implements Type
 		fields = new FieldMirror[size];
 		for(int i = 0; i < size; i++)
 		{
-			int id = ps.readId();
+			int id = ps.readInt();
 			String name = ps.readString();
-			TypeMirror typeMirror = ps.readTypeMirror();
+			TypeRef typeRef = ps.readTypeRef();
 			int attributes = ps.readInt();
-			fields[i] = new FieldMirror(vm, id, name, typeMirror, parent, attributes);
+			fields[i] = new FieldMirror(vm, id, name, typeRef, parent, attributes);
 		}
 	}
 }
