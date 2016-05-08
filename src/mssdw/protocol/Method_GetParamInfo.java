@@ -4,7 +4,6 @@ import mssdw.JDWPException;
 import mssdw.MethodMirror;
 import mssdw.MethodParameterMirror;
 import mssdw.PacketStream;
-import mssdw.TypeMirror;
 import mssdw.TypeRef;
 import mssdw.VirtualMachineImpl;
 
@@ -25,7 +24,8 @@ public class Method_GetParamInfo implements Method
 	static PacketStream enqueueCommand(VirtualMachineImpl vm, MethodMirror methodMirror)
 	{
 		PacketStream ps = new PacketStream(vm, COMMAND_SET, COMMAND);
-		ps.writeId(methodMirror);
+		ps.writeTypeRef(methodMirror.getTypeRef());
+		ps.writeInt(methodMirror.id());
 		ps.send();
 		return ps;
 	}
@@ -38,7 +38,7 @@ public class Method_GetParamInfo implements Method
 
 	public final int callConversion;
 	public final int genericParameterCount;
-	public final TypeMirror returnType;
+	public final TypeRef returnType;
 	public final MethodParameterMirror[] parameters;
 
 	private Method_GetParamInfo(VirtualMachineImpl vm, PacketStream ps)
@@ -46,18 +46,12 @@ public class Method_GetParamInfo implements Method
 		callConversion = ps.readInt();
 		int parameterCount = ps.readInt();
 		genericParameterCount = ps.readInt();
-		returnType = ps.readTypeMirror();
+		returnType = ps.readTypeRef();
 
 		parameters = new MethodParameterMirror[parameterCount];
-		TypeRef[] parameterTypes = new TypeRef[parameterCount];
 		for(int i = 0; i < parameterCount; i++)
 		{
-			parameterTypes[i] = ps.readTypeRef();
-		}
-
-		for(int i = 0; i < parameterCount; i++)
-		{
-			parameters[i] = new MethodParameterMirror(vm, i, parameterTypes[i], ps.readString());
+			parameters[i] = new MethodParameterMirror(vm, i, ps.readTypeRef(), ps.readString());
 		}
 	}
 }

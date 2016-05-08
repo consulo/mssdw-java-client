@@ -2,10 +2,9 @@ package mssdw;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import mssdw.protocol.StackFrame_GetThis;
+import mssdw.protocol.StackFrame_GetArgumentValue;
 import mssdw.protocol.StackFrame_GetLocalValue;
-import mssdw.protocol.StackFrame_SetValues;
-import mssdw.util.ImmutablePair;
+import mssdw.protocol.StackFrame_GetThis;
 
 /**
  * @author VISTALL
@@ -107,14 +106,20 @@ public class StackFrameMirror extends MirrorImpl implements MirrorWithId
 		}
 	}
 
-	public void setLocalOrParameterValues(@NotNull ImmutablePair<LocalVariableOrParameterMirror, Value<?>>... pairs)
+	@Nullable
+	public Value argumentValue(MethodParameterMirror mirror)
 	{
 		try
 		{
-			StackFrame_SetValues.process(vm, myThreadMirror, this, pairs);
+			StackFrame_GetArgumentValue process = StackFrame_GetArgumentValue.process(vm, myThreadMirror, this, mirror);
+			return process.value;
 		}
 		catch(JDWPException e)
 		{
+			if(e.errorCode == JDWP.Error.ABSENT_INFORMATION)
+			{
+				return null;
+			}
 			throw e.asUncheckedException();
 		}
 	}

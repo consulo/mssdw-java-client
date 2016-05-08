@@ -109,7 +109,12 @@ public class MethodMirror extends CustomAttributeMirrorOwner implements MirrorWi
 	@Nullable
 	public TypeMirror returnType()
 	{
-		return paramInfo().returnType;
+		TypeRef returnType = paramInfo().returnType;
+		if(returnType.getModuleNameId() == 0)
+		{
+			return null;
+		}
+		return new TypeMirror(virtualMachine(), paramInfo().returnType);
 	}
 
 	@Nullable
