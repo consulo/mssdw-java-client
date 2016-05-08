@@ -72,6 +72,10 @@ public class Main
 				}
 				System.out.println("test");
 			}
+			else
+			{
+				System.out.println(next.getClass().getSimpleName());
+			}
 
 			Thread.sleep(100);
 		}

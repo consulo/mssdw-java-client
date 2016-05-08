@@ -25,6 +25,7 @@
 
 package mssdw.event;
 
+import mssdw.EventSetImpl;
 import mssdw.JDWP;
 import mssdw.VirtualMachine;
 
@@ -44,11 +45,11 @@ import mssdw.VirtualMachine;
  * @author Robert Field
  * @since  1.3
  */
-public class VMStartEvent extends ThreadedEvent
+public class VMStartEvent extends EventSetImpl.EventImpl
 {
 	public VMStartEvent(VirtualMachine virtualMachine, JDWP.Event.Composite.Events.VMStart evt)
 	{
-		super(virtualMachine, evt, evt.requestID, evt.thread);
+		super(virtualMachine, evt, evt.requestID);
 	}
 
 	@Override

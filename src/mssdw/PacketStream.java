@@ -469,7 +469,7 @@ public class PacketStream
 		return new TypeRef(moduleId, classId, isPointer, isByRef, arraySizes, arrayLowerBounds);
 	}
 
-	public void WriteTypeRef(TypeRef typeRef)
+	public void writeTypeRef(TypeRef typeRef)
 	{
 		writeInt(typeRef.getModuleNameId());
 		writeInt(typeRef.getClassToken());

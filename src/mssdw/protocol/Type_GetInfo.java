@@ -23,7 +23,7 @@ public class Type_GetInfo implements Type
 	static PacketStream enqueueCommand(VirtualMachineImpl vm, TypeMirror typeMirror)
 	{
 		PacketStream ps = new PacketStream(vm, COMMAND_SET, COMMAND);
-		ps.writeId(typeMirror);
+		ps.writeTypeRef(typeMirror.getTypeRef());
 		ps.send();
 		return ps;
 	}

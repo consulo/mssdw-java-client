@@ -25,6 +25,7 @@
 
 package mssdw.event;
 
+import mssdw.EventSetImpl;
 import mssdw.JDWP;
 import mssdw.VirtualMachine;
 
@@ -69,14 +70,11 @@ import mssdw.VirtualMachine;
  * @author Robert Field
  * @since  1.3
  */
-public class VMDeathEvent extends ThreadedEvent
+public class VMDeathEvent extends EventSetImpl.EventImpl
 {
-	public final int exitCode;
-
 	public VMDeathEvent(VirtualMachine virtualMachine, JDWP.Event.Composite.Events.VMDeath evt)
 	{
-		super(virtualMachine, evt, evt.requestID, evt.thread);
-		exitCode = evt.exitCode;
+		super(virtualMachine, evt, evt.requestID);
 	}
 
 	@Override

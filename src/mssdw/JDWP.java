@@ -938,25 +938,11 @@ public class JDWP
 						return EventKind.VM_START;
 					}
 
-					/**
-					 * Request that generated event (or 0 if this
-					 * event is automatically generated.
-					 */
 					public final int requestID;
-
-					/**
-					 * Initial thread
-					 */
-					public final ThreadMirror thread;
 
 					VMStart(VirtualMachineImpl vm, PacketStream ps)
 					{
 						requestID = ps.readInt();
-						if(vm.traceReceives)
-						{
-							vm.printReceiveTrace(6, "requestID(int): " + requestID);
-						}
-						thread = ps.readThreadMirror();
 					}
 				}
 
@@ -1274,14 +1260,10 @@ public class JDWP
 					}
 
 					public final int requestID;
-					public final ThreadMirror thread;
-					public final int exitCode;
 
 					VMDeath(VirtualMachineImpl vm, PacketStream ps)
 					{
 						requestID = ps.readInt();
-						thread = ps.readThreadMirror();
-						exitCode = vm.isAtLeastVersion(2, 27) ? ps.readInt() : 0;
 					}
 				}
 			}
