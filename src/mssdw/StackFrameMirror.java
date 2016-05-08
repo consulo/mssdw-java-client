@@ -11,39 +11,57 @@ import mssdw.util.ImmutablePair;
  * @author VISTALL
  * @since 10.04.14
  */
-public class StackFrameMirror extends MirrorImpl implements Locatable, MirrorWithId
+public class StackFrameMirror extends MirrorImpl implements MirrorWithId
 {
-	public enum StackFrameFlags
-	{
-		NONE,
-		DEBUGGER_INVOKE,
-		NATIVE_TRANSITION
-	}
-
 	private final ThreadMirror myThreadMirror;
 	private final int myFrameID;
-	private final Location myLocation;
-	private final StackFrameFlags myFlags;
+	private final String myFilePath;
+	private final int myLine;
+	private final int myColumn;
+	private final TypeRef myTypeRef;
+	private final int myFunctionId;
 
-	public StackFrameMirror(VirtualMachine aVm, ThreadMirror threadMirror, int frameID, Location location, StackFrameFlags flags)
+	public StackFrameMirror(VirtualMachine aVm, ThreadMirror threadMirror, int frameID, String filePath, int line, int column, TypeRef typeRef, int functionId)
 	{
 		super(aVm);
 		myThreadMirror = threadMirror;
 		myFrameID = frameID;
-		myLocation = location;
-		myFlags = flags;
+		myFilePath = filePath;
+		myLine = line;
+		myColumn = column;
+		myTypeRef = typeRef;
+		myFunctionId = functionId;
 	}
 
-	public StackFrameFlags flags()
+	public String getFilePath()
 	{
-		return myFlags;
+		return myFilePath;
+	}
+
+	public int getLine()
+	{
+		return myLine;
+	}
+
+	public int getColumn()
+	{
+		return myColumn;
+	}
+
+	public TypeRef getTypeRef()
+	{
+		return myTypeRef;
+	}
+
+	public int getFunctionId()
+	{
+		return myFunctionId;
 	}
 
 	@NotNull
-	@Override
-	public Location location()
+	public MethodMirror getMethod()
 	{
-		return myLocation;
+		return new MethodMirror(virtualMachine(), getTypeRef(), myFunctionId);
 	}
 
 	@NotNull
@@ -74,11 +92,6 @@ public class StackFrameMirror extends MirrorImpl implements Locatable, MirrorWit
 	@Nullable
 	public Value localOrParameterValue(LocalVariableOrParameterMirror mirror)
 	{
-		// native methods ill throw absent information
-		if(flags() == StackFrameFlags.NATIVE_TRANSITION)
-		{
-			return null;
-		}
 		try
 		{
 			StackFrame_GetValues process = StackFrame_GetValues.process(vm, myThreadMirror, this, mirror);
@@ -97,11 +110,6 @@ public class StackFrameMirror extends MirrorImpl implements Locatable, MirrorWit
 	@Nullable
 	public Value[] localOrParameterValues(LocalVariableOrParameterMirror... mirror)
 	{
-		// native methods ill throw absent information
-		if(flags() == StackFrameFlags.NATIVE_TRANSITION)
-		{
-			return null;
-		}
 		try
 		{
 			StackFrame_GetValues process = StackFrame_GetValues.process(vm, myThreadMirror, this, mirror);

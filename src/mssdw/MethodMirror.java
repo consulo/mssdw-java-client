@@ -8,7 +8,6 @@ import org.jetbrains.annotations.Nullable;
 import edu.arizona.cs.mbel.signature.MethodAttributes;
 import mssdw.protocol.Method_GetCustomAttributes;
 import mssdw.protocol.Method_GetDebugInfo;
-import mssdw.protocol.Method_GetDeclarationType;
 import mssdw.protocol.Method_GetInfo;
 import mssdw.protocol.Method_GetLocalsInfo;
 import mssdw.protocol.Method_GetName;
@@ -30,10 +29,17 @@ public class MethodMirror extends CustomAttributeMirrorOwner implements MirrorWi
 
 	private int myMaxCodeIndex = Integer.MIN_VALUE;
 	private Method_GetDebugInfo.Entry[] myDebugEntries;
+	private TypeRef myTypeRef;
 
-	public MethodMirror(@NotNull VirtualMachine aVm, int id)
+	public MethodMirror(@NotNull VirtualMachine aVm, @NotNull TypeRef typeRef, int id)
 	{
 		super(aVm, id);
+		myTypeRef = typeRef;
+	}
+
+	public TypeRef getTypeRef()
+	{
+		return myTypeRef;
 	}
 
 	public Method_GetParamInfo paramInfo()
@@ -192,14 +198,7 @@ public class MethodMirror extends CustomAttributeMirrorOwner implements MirrorWi
 			return myDeclarationType;
 		}
 
-		try
-		{
-			return myDeclarationType = Method_GetDeclarationType.process(vm, this).declarationType;
-		}
-		catch(JDWPException e)
-		{
-			throw e.asUncheckedException();
-		}
+		return myDeclarationType = new TypeMirror(virtualMachine(), getTypeRef());
 	}
 
 	@Override

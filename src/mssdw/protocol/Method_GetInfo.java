@@ -22,7 +22,8 @@ public class Method_GetInfo implements Method
 	static PacketStream enqueueCommand(VirtualMachineImpl vm, MethodMirror methodMirror)
 	{
 		PacketStream ps = new PacketStream(vm, COMMAND_SET, COMMAND);
-		ps.writeId(methodMirror);
+		ps.WriteTypeRef(methodMirror.getTypeRef());
+		ps.writeInt(methodMirror.id());
 		ps.send();
 		return ps;
 	}

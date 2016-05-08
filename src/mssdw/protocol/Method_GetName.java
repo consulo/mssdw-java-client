@@ -22,7 +22,8 @@ public class Method_GetName implements Method
 	static PacketStream enqueueCommand(VirtualMachineImpl vm, MethodMirror methodMirror)
 	{
 		PacketStream ps = new PacketStream(vm, COMMAND_SET, COMMAND);
-		ps.writeId(methodMirror);
+		ps.WriteTypeRef(methodMirror.getTypeRef());
+		ps.writeInt(methodMirror.id());
 		ps.send();
 		return ps;
 	}
@@ -38,15 +39,6 @@ public class Method_GetName implements Method
 
 	private Method_GetName(VirtualMachineImpl vm, PacketStream ps)
 	{
-		if(vm.traceReceives)
-		{
-			vm.printTrace("Receiving Command(id=" + ps.pkt.id + ") Method_GetName" + (ps.pkt.flags != 0 ? ", " +
-					"FLAGS=" + ps.pkt.flags : "") + (ps.pkt.errorCode != 0 ? ", ERROR CODE=" + ps.pkt.errorCode : ""));
-		}
 		name = ps.readString();
-		if(vm.traceReceives)
-		{
-			vm.printReceiveTrace(4, "name): " + name);
-		}
 	}
 }

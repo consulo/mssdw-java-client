@@ -86,6 +86,7 @@ import org.jetbrains.annotations.Nullable;
  * @see Locatable
  * @since 1.3
  */
+@Deprecated
 public interface Location extends Mirror
 {
 	@NotNull

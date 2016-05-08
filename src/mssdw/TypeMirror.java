@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.mustbe.consulo.DeprecationInfo;
 import edu.arizona.cs.mbel.signature.TypeAttributes;
 import mssdw.protocol.Type_GetCustomAttributes;
 import mssdw.protocol.Type_GetFields;
@@ -34,23 +33,25 @@ public class TypeMirror extends CustomAttributeMirrorOwner implements MirrorWith
 			TypeAttributes.NestedFamORAssem
 	};
 
-	private final TypeMirror myParent;
 	private Type_GetInfo myInfo;
 	private MethodMirror[] myMethodMirrors;
 	private FieldMirror[] myFieldMirrors;
 	private PropertyMirror[] myProperties;
 	private TypeMirror[] myInterfaces;
+	private TypeRef myTypeRef;
 
-	public TypeMirror(@NotNull VirtualMachine aVm, @Nullable TypeMirror parent, int id)
+	private TypeMirror myBaseType;
+
+	public TypeMirror(@NotNull VirtualMachine aVm, @NotNull TypeRef typeRef)
 	{
-		super(aVm, id);
-		myParent = parent;
+		super(aVm, typeRef.getClassToken());
+		myTypeRef = typeRef;
 	}
 
-	@Nullable
-	public AssemblyMirror assembly()
+	@NotNull
+	public TypeRef getTypeRef()
 	{
-		return info().assemblyMirror;
+		return myTypeRef;
 	}
 
 	@NotNull
@@ -95,15 +96,19 @@ public class TypeMirror extends CustomAttributeMirrorOwner implements MirrorWith
 	}
 
 	@Nullable
-	public TypeMirror parentType()
-	{
-		return myParent;
-	}
-
-	@Nullable
 	public TypeMirror baseType()
 	{
-		return info().baseType;
+		TypeRef baseTypeRef = info().baseTypeRef;
+		if(baseTypeRef.getModuleNameId() == 0)
+		{
+			return null;
+		}
+
+		if(myBaseType != null)
+		{
+			return myBaseType;
+		}
+		return myBaseType = new TypeMirror(virtualMachine(), baseTypeRef);
 	}
 
 	@NotNull
@@ -113,57 +118,35 @@ public class TypeMirror extends CustomAttributeMirrorOwner implements MirrorWith
 		return info().name;
 	}
 
-	/**
-	 * In most case it ill return same as {@link #qualifiedName()}. But if it runtime copy - it ill different
-	 */
 	@NotNull
 	public String fullName()
 	{
 		return info().fullName;
 	}
 
-	@NotNull
-	@Deprecated
-	@DeprecationInfo(value = "Use #fullName()", until = "1.1")
-	public String qualifiedName()
-	{
-		TypeMirror parentType = parentType();
-		if(parentType != null)
-		{
-			return parentType.qualifiedName() + "/" + name();
-		}
-
-		String namespace = namespace();
-		if(namespace.isEmpty())
-		{
-			return name();
-		}
-		return namespace + "." + name();
-	}
-
 	@Nullable
 	@Override
 	public TypeMirror original()
 	{
-		return info().generalType;
+		return this;
 	}
 
 	@NotNull
 	@Override
 	public TypeMirror[] genericArguments()
 	{
-		return info().genericArguments;
+		return EMPTY_ARRAY;
 	}
 
 	@NotNull
 	public TypeMirror[] nestedTypes()
 	{
-		return info().nestedTypes;
+		return EMPTY_ARRAY;
 	}
 
 	public boolean isArray()
 	{
-		return info().rank > 0;
+		return info().isArray;
 	}
 
 	@NotNull
@@ -365,8 +348,7 @@ public class TypeMirror extends CustomAttributeMirrorOwner implements MirrorWith
 	public String toString()
 	{
 		StringBuilder builder = new StringBuilder();
-		builder.append(getClass().getSimpleName()).append(" {").append(" id = ").append(id()).append(", fullName = ").append(qualifiedName()).append
-				(" }");
+		builder.append(getClass().getSimpleName()).append(" {").append(" id = ").append(id()).append(", fullName = ").append(fullName()).append(" }");
 		return builder.toString();
 	}
 }

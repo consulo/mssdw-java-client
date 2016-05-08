@@ -85,17 +85,12 @@ public class ThreadMirror extends MirrorWithIdAndName
 	{
 		try
 		{
-			Thread_GetFrameInfo.Frame[] frames = Thread_GetFrameInfo.process(vm, this, 0, -1).frames;
+			Thread_GetFrameInfo.Frame[] frames = Thread_GetFrameInfo.process(vm, this).frames;
 			List<StackFrameMirror> frameMirrors = new ArrayList<StackFrameMirror>(frames.length);
 			for(Thread_GetFrameInfo.Frame frame : frames)
 			{
-				if(frame.location == null)
-				{
-					throw new InternalException("Invalid frame location");
-				}
 
-				StackFrameMirror frameMirror = new StackFrameMirror(vm, this, frame.frameID, frame.location, StackFrameMirror.StackFrameFlags.values
-						()[frame.flags]);
+				StackFrameMirror frameMirror = new StackFrameMirror(vm, this, frame.frameID, frame.FilePath, frame.Line, frame.Column, frame.TypeRef, frame.FunctionToken);
 				frameMirrors.add(frameMirror);
 			}
 			return frameMirrors;

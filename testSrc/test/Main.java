@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Map;
 
 import mssdw.EventKind;
+import mssdw.MethodMirror;
 import mssdw.SocketAttachingConnector;
+import mssdw.StackFrameMirror;
 import mssdw.ThreadMirror;
 import mssdw.VirtualMachineImpl;
 import mssdw.connect.Connector;
@@ -59,7 +61,14 @@ public class Main
 				List<ThreadMirror> threadMirrors = virtualMachine.allThreads();
 				for(ThreadMirror threadMirror : threadMirrors)
 				{
-					System.out.println(threadMirror.name() + " " + threadMirror.isRunning() + " " + threadMirror.isSuspended());
+					List<StackFrameMirror> frames = threadMirror.frames();
+					System.out.println("thread: " + threadMirror.id() + ", " + frames.size());
+					for(StackFrameMirror frame : frames)
+					{
+						MethodMirror method = frame.getMethod();
+
+						System.out.println("> " + method.name() + " " + frame.getFilePath());
+					}
 				}
 				System.out.println("test");
 			}

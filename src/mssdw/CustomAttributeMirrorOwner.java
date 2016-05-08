@@ -37,7 +37,7 @@ public abstract class CustomAttributeMirrorOwner extends MirrorWithIdAndName imp
 
 			TypeMirror typeMirror = constructorMirror.declaringType();
 
-			String s = typeMirror.qualifiedName();
+			String s = typeMirror.fullName();
 			if(vmQName.equals(s))
 			{
 				list.add(customAttributeMirror);

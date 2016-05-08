@@ -1,9 +1,9 @@
 package mssdw.protocol;
 
 import mssdw.JDWPException;
-import mssdw.Location;
 import mssdw.PacketStream;
 import mssdw.ThreadMirror;
+import mssdw.TypeRef;
 import mssdw.VirtualMachineImpl;
 
 /**
@@ -14,18 +14,16 @@ public class Thread_GetFrameInfo implements Thread
 {
 	static final int COMMAND = 1;
 
-	public static Thread_GetFrameInfo process(VirtualMachineImpl vm, ThreadMirror thread, int startFrame, int length) throws JDWPException
+	public static Thread_GetFrameInfo process(VirtualMachineImpl vm, ThreadMirror thread) throws JDWPException
 	{
-		PacketStream ps = enqueueCommand(vm, thread, startFrame, length);
+		PacketStream ps = enqueueCommand(vm, thread);
 		return waitForReply(vm, ps);
 	}
 
-	static PacketStream enqueueCommand(VirtualMachineImpl vm, ThreadMirror thread, int startFrame, int length)
+	static PacketStream enqueueCommand(VirtualMachineImpl vm, ThreadMirror thread)
 	{
 		PacketStream ps = new PacketStream(vm, COMMAND_SET, COMMAND);
 		ps.writeId(thread);
-		ps.writeInt(startFrame);
-		ps.writeInt(length);
 		ps.send();
 		return ps;
 	}
@@ -40,15 +38,24 @@ public class Thread_GetFrameInfo implements Thread
 	{
 		public final int frameID;
 
-		public final Location location;
+		public String FilePath;
 
-		public final byte flags;
+		public int Line;
+
+		public int Column;
+
+		public TypeRef TypeRef;
+
+		public int FunctionToken;
 
 		private Frame(VirtualMachineImpl vm, PacketStream ps)
 		{
 			frameID = ps.readInt();
-			location = ps.readLocation();
-			flags = ps.readByte();
+			FilePath = ps.readString();
+			Line = ps.readInt();
+			Column = ps.readInt();
+			TypeRef = ps.readTypeRef();
+			FunctionToken = ps.readInt();
 		}
 	}
 

@@ -26,6 +26,8 @@
 package mssdw;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -88,6 +90,7 @@ public class PacketStream
 		}
 	}
 
+	@Deprecated
 	public void writeIntBool(boolean data)
 	{
 		writeInt(data ? 1 : 0);
@@ -301,6 +304,7 @@ public class PacketStream
 	/**
 	 * Read boolean represented as 4 byte.
 	 */
+	@Deprecated
 	public boolean readIntBool()
 	{
 		int ret = readInt();
@@ -309,7 +313,7 @@ public class PacketStream
 
 	public boolean readByteBool()
 	{
-		int ret = readInt();
+		int ret = readByte();
 		return (ret != 0);
 	}
 
@@ -419,14 +423,10 @@ public class PacketStream
 	}
 
 	@Nullable
+	@Deprecated
 	public AssemblyMirror readAssemblyMirror()
 	{
-		int ref = readId();
-		if(ref == 0)
-		{
-			return null;
-		}
-		return vm.getOrCreateAssemblyMirror(ref);
+		return null;
 	}
 
 	@Nullable
@@ -441,31 +441,82 @@ public class PacketStream
 	}
 
 	@Nullable
+	@Deprecated
 	public MethodMirror readMethodMirror()
 	{
-		int ref = readId();
-		if(ref == 0)
+		return null;
+	}
+
+	@NotNull
+	public TypeRef readTypeRef()
+	{
+		int moduleId = readId();
+		int classId = readId();
+		boolean isPointer = readByteBool();
+		boolean isByRef = readByteBool();
+		int arraySizesLen = readByte();
+		List<Integer> arraySizes = arraySizesLen == 0 ? null : new ArrayList<Integer>(arraySizesLen);
+		for(int i = 0; i < arraySizesLen; i++)
 		{
-			return null;
+			arraySizes.add(readInt());
 		}
-		return vm.getOrCreateMethodMirror(ref);
+		int arrayLowerBoundsLen = readByte();
+		List<Integer> arrayLowerBounds = arrayLowerBoundsLen == 0 ? null : new ArrayList<Integer>(arrayLowerBoundsLen);
+		for(int i = 0; i < arrayLowerBoundsLen; i++)
+		{
+			arrayLowerBounds.add(readInt());
+		}
+		return new TypeRef(moduleId, classId, isPointer, isByRef, arraySizes, arrayLowerBounds);
+	}
+
+	public void WriteTypeRef(TypeRef typeRef)
+	{
+		writeInt(typeRef.getModuleNameId());
+		writeInt(typeRef.getClassToken());
+		writeByteBool(typeRef.isPointer());
+		writeByteBool(typeRef.isByRef());
+
+		List<Integer> arraySizes = typeRef.getArraySizes();
+		if(arraySizes != null)
+		{
+			writeByte((byte) arraySizes.size());
+			for(int arraySize : arraySizes)
+			{
+				writeInt(arraySize);
+			}
+		}
+		else
+		{
+			writeByte((byte) 0);
+		}
+
+		List<Integer> arrayLowerBounds = typeRef.getArrayLowerBounds();
+		if(arrayLowerBounds != null)
+		{
+			writeByte((byte) arrayLowerBounds.size());
+			for(int arraySize : arrayLowerBounds)
+			{
+				writeInt(arraySize);
+			}
+		}
+		else
+		{
+			writeByte((byte) 0);
+		}
 	}
 
 	@Nullable
+	@Deprecated
 	public TypeMirror readTypeMirror()
 	{
 		return readTypeMirror(null);
 	}
 
 	@Nullable
+	@Deprecated
 	public TypeMirror readTypeMirror(@Nullable TypeMirror parent)
 	{
-		int ref = readId();
-		if(ref == 0)
-		{
-			return null;
-		}
-		return vm.getOrCreateTypeMirror(ref, parent);
+		return null;
 	}
 
 	@NotNull

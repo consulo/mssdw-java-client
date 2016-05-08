@@ -25,10 +25,7 @@
 
 package mssdw;
 
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
 import mssdw.connect.spi.Connection;
@@ -68,11 +65,6 @@ public class VirtualMachineImpl extends MirrorImpl implements VirtualMachine
 
 	private final Object initMonitor = new Object();
 	private boolean initComplete = false;
-
-	private Map<Integer, TypeMirror> myTypeMirrorCache = new HashMap<Integer, TypeMirror>();
-	private Map<Integer, MethodMirror> myMethodMirrorCache = new HashMap<Integer, MethodMirror>();
-	private Map<Integer, AssemblyMirror> myAssemblyMirrorCache = new HashMap<Integer, AssemblyMirror>();
-
 
 	VirtualMachineImpl(VirtualMachineManager manager, Connection connection, Process process, int sequenceNumber)
 	{
@@ -381,45 +373,6 @@ public class VirtualMachineImpl extends MirrorImpl implements VirtualMachine
 		{
 			throw new VersionMismatchException();
 		}
-	}
-
-	@NotNull
-	public TypeMirror getOrCreateTypeMirror(int id, TypeMirror parent)
-	{
-		TypeMirror typeMirror = myTypeMirrorCache.get(id);
-		if(typeMirror == null)
-		{
-			myTypeMirrorCache.put(id, typeMirror = new TypeMirror(vm, parent, id));
-		}
-		return typeMirror;
-	}
-
-	@NotNull
-	public Collection<TypeMirror> getCachedTypeMirrors()
-	{
-		return myTypeMirrorCache.values();
-	}
-
-	@NotNull
-	public MethodMirror getOrCreateMethodMirror(int id)
-	{
-		MethodMirror methodMirror = myMethodMirrorCache.get(id);
-		if(methodMirror == null)
-		{
-			myMethodMirrorCache.put(id, methodMirror = new MethodMirror(vm, id));
-		}
-		return methodMirror;
-	}
-
-	@NotNull
-	public AssemblyMirror getOrCreateAssemblyMirror(int id)
-	{
-		AssemblyMirror assemblyMirror = myAssemblyMirrorCache.get(id);
-		if(assemblyMirror == null)
-		{
-			myAssemblyMirrorCache.put(id, assemblyMirror = new AssemblyMirror(vm, id));
-		}
-		return assemblyMirror;
 	}
 
 	public void printTrace(String string)
