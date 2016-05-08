@@ -24,8 +24,8 @@ public class StackFrame_GetThis implements StackFrame
 	static PacketStream enqueueCommand(VirtualMachineImpl vm, ThreadMirror threadMirror, StackFrameMirror stackFrameMirror)
 	{
 		PacketStream ps = new PacketStream(vm, COMMAND_SET, COMMAND);
-		ps.writeId(threadMirror);
-		ps.writeId(stackFrameMirror);
+		ps.writeInt(threadMirror.id());
+		ps.writeInt(stackFrameMirror.id());
 		ps.send();
 		return ps;
 	}

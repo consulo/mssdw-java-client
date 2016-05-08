@@ -143,6 +143,7 @@ public class PacketStream
 		writeLong(Double.doubleToLongBits(data));
 	}
 
+	@Deprecated
 	public void writeId(@Nullable MirrorWithId data)
 	{
 		writeInt(data == null ? 0 : data.id());
@@ -404,6 +405,7 @@ public class PacketStream
 		return ret;
 	}
 
+	@Deprecated
 	public int readId()
 	{
 		return readInt();
@@ -522,8 +524,10 @@ public class PacketStream
 	@NotNull
 	public ObjectValueMirror readObjectMirror()
 	{
-		int ref = readId();
-		return new ObjectValueMirror(vm, ref);
+		int ref = readInt();
+		long address = readLong();
+		TypeRef typeRef = readTypeRef();
+		return new ObjectValueMirror(vm, ref, address, typeRef);
 	}
 
 	@NotNull
@@ -571,10 +575,10 @@ public class PacketStream
 				{
 					return new EnumValueMirror(vm, typeMirror, values);
 				}
-				return new StructValueMirror(vm, typeMirror, values);
+				return new StructValueMirror(vm, typeMirror, values);*/
 			case SignatureConstants.ELEMENT_TYPE_CLASS:
 			case SignatureConstants.ELEMENT_TYPE_OBJECT:
-				return readObjectMirror();
+				return readObjectMirror(); /*
 			case SignatureConstants.ELEMENT_TYPE_ARRAY:
 			case SignatureConstants.ELEMENT_TYPE_SZARRAY:
 				return new ArrayValueMirror(vm, readObjectMirror());    */

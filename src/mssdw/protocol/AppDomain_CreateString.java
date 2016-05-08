@@ -23,7 +23,7 @@ public class AppDomain_CreateString implements AppDomain
 	static PacketStream enqueueCommand(VirtualMachineImpl vm, AppDomainMirror domainMirror, String value)
 	{
 		PacketStream ps = new PacketStream(vm, COMMAND_SET, COMMAND);
-		ps.writeId(domainMirror);
+		ps.writeInt(domainMirror.id());
 		ps.writeString(value);
 		ps.send();
 		return ps;

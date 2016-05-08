@@ -2,8 +2,6 @@ package mssdw;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import mssdw.protocol.ObjectReference_GetAddress;
-import mssdw.protocol.ObjectReference_GetType;
 
 /**
  * @author VISTALL
@@ -12,27 +10,19 @@ import mssdw.protocol.ObjectReference_GetType;
 public class ObjectValueMirror extends ValueImpl<Object> implements MirrorWithId
 {
 	private final int myId;
-	private long myAddress = -1;
+	private final long myAddress;
+	private final TypeRef myTypeRef;
 
-	public ObjectValueMirror(VirtualMachine aVm, int id)
+	public ObjectValueMirror(VirtualMachine aVm, int id, long address, TypeRef typeRef)
 	{
 		super(aVm);
 		myId = id;
+		myAddress = address;
+		myTypeRef = typeRef;
 	}
 
 	public long address()
 	{
-		if(myAddress == -1)
-		{
-			try
-			{
-				myAddress = ObjectReference_GetAddress.process(vm, this).address;
-			}
-			catch(JDWPException e)
-			{
-				throw e.asUncheckedException();
-			}
-		}
 		return myAddress;
 	}
 
@@ -45,14 +35,7 @@ public class ObjectValueMirror extends ValueImpl<Object> implements MirrorWithId
 	@Override
 	public TypeMirror type()
 	{
-		try
-		{
-			return ObjectReference_GetType.process(vm, this).type;
-		}
-		catch(JDWPException e)
-		{
-			throw e.asUncheckedException();
-		}
+		return new TypeMirror(virtualMachine(), myTypeRef);
 	}
 
 	@Nullable
