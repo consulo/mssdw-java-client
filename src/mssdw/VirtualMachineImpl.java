@@ -28,8 +28,10 @@ package mssdw;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import mssdw.connect.spi.Connection;
 import mssdw.event.EventQueue;
+import mssdw.protocol.VirtualMachine_FindType;
 import mssdw.protocol.VirtualMachine_GetVersion;
 import mssdw.request.EventRequestManager;
 
@@ -74,9 +76,9 @@ public class VirtualMachineImpl extends MirrorImpl implements VirtualMachine
 		this.sequenceNumber = sequenceNumber;
 
         /* Create ThreadGroup to be used by all threads servicing
-         * this VM.
+		 * this VM.
          */
-		threadGroupForJDI = new ThreadGroup(vmManager.mainGroupForJDI(), "Mono Soft Debugger [" +this.hashCode() + "]");
+		threadGroupForJDI = new ThreadGroup(vmManager.mainGroupForJDI(), "Mono Soft Debugger [" + this.hashCode() + "]");
 
         /*
          * Set up a thread to communicate with the target VM over
@@ -143,6 +145,26 @@ public class VirtualMachineImpl extends MirrorImpl implements VirtualMachine
 	VMState state()
 	{
 		return state;
+	}
+
+	@Nullable
+	@Override
+	public TypeMirror findTypeByQualifiedName(@Nullable String vmQName)
+	{
+		TypeRef type = null;
+		try
+		{
+			type = VirtualMachine_FindType.process(this, vmQName).type;
+			if(type == null)
+			{
+				return null;
+			}
+			return new TypeMirror(this, type);
+		}
+		catch(JDWPException e)
+		{
+			throw e.asUncheckedException();
+		}
 	}
 
 	@NotNull

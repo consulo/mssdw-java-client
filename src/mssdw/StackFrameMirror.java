@@ -3,7 +3,7 @@ package mssdw;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import mssdw.protocol.StackFrame_GetThis;
-import mssdw.protocol.StackFrame_GetValues;
+import mssdw.protocol.StackFrame_GetLocalValue;
 import mssdw.protocol.StackFrame_SetValues;
 import mssdw.util.ImmutablePair;
 
@@ -90,30 +90,12 @@ public class StackFrameMirror extends MirrorImpl implements MirrorWithId
 	}
 
 	@Nullable
-	public Value localOrParameterValue(LocalVariableOrParameterMirror mirror)
+	public Value localValue(LocalVariableMirror mirror)
 	{
 		try
 		{
-			StackFrame_GetValues process = StackFrame_GetValues.process(vm, myThreadMirror, this, mirror);
-			return process.values[0];
-		}
-		catch(JDWPException e)
-		{
-			if(e.errorCode == JDWP.Error.ABSENT_INFORMATION)
-			{
-				return null;
-			}
-			throw e.asUncheckedException();
-		}
-	}
-
-	@Nullable
-	public Value[] localOrParameterValues(LocalVariableOrParameterMirror... mirror)
-	{
-		try
-		{
-			StackFrame_GetValues process = StackFrame_GetValues.process(vm, myThreadMirror, this, mirror);
-			return process.values;
+			StackFrame_GetLocalValue process = StackFrame_GetLocalValue.process(vm, myThreadMirror, this, mirror);
+			return process.value;
 		}
 		catch(JDWPException e)
 		{

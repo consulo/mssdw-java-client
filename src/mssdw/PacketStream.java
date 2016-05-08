@@ -152,7 +152,7 @@ public class PacketStream
 	{
 		if(value instanceof StringValueMirror)
 		{
-			writeValue(((StringValueMirror) value).object());
+		//	writeValue(((StringValueMirror) value).object());
 		}
 		else if(value instanceof CharValueMirror)
 		{
@@ -162,7 +162,7 @@ public class PacketStream
 		else if(value instanceof BooleanValueMirror)
 		{
 			writeByte(SignatureConstants.ELEMENT_TYPE_BOOLEAN);
-			writeIntBool(((BooleanValueMirror) value).value());
+			writeByteBool(((BooleanValueMirror) value).value());
 		}
 		else if(value instanceof NumberValueMirror)
 		{
@@ -469,7 +469,7 @@ public class PacketStream
 		return new TypeRef(moduleId, classId, isPointer, isByRef, arraySizes, arrayLowerBounds);
 	}
 
-	public void writeTypeRef(TypeRef typeRef)
+	public void writeTypeRef(@Nullable TypeRef typeRef)
 	{
 		writeInt(typeRef.getModuleNameId());
 		writeInt(typeRef.getClassToken());
@@ -535,8 +535,8 @@ public class PacketStream
 			case SignatureConstants.ELEMENT_TYPE_VOID:
 				return new VoidValueMirror(vm);
 			case SignatureConstants.ELEMENT_TYPE_BOOLEAN:
-				return new BooleanValueMirror(vm, readIntBool());
-			case SignatureConstants.ELEMENT_TYPE_I1:
+				return new BooleanValueMirror(vm, readByteBool());
+			/*case SignatureConstants.ELEMENT_TYPE_I1:
 			case SignatureConstants.ELEMENT_TYPE_U1:
 				return new NumberValueMirror(vm, tag, readInt());
 			case SignatureConstants.ELEMENT_TYPE_U2:
@@ -552,10 +552,10 @@ public class PacketStream
 			case SignatureConstants.ELEMENT_TYPE_R4:
 				return new NumberValueMirror(vm, tag, readFloat());
 			case SignatureConstants.ELEMENT_TYPE_R8:
-				return new NumberValueMirror(vm, tag, readDouble());
+				return new NumberValueMirror(vm, tag, readDouble());  */
 			case SignatureConstants.ELEMENT_TYPE_STRING:
-				return new StringValueMirror(vm, readObjectMirror());
-			case SignatureConstants.ELEMENT_TYPE_CHAR:
+				return new StringValueMirror(vm, readString());
+			/*case SignatureConstants.ELEMENT_TYPE_CHAR:
 				return new CharValueMirror(vm, (char) readInt());
 			case SignatureConstants.ELEMENT_TYPE_VALUETYPE:
 				boolean isEnum = readByte() == 1;
@@ -577,11 +577,11 @@ public class PacketStream
 				return readObjectMirror();
 			case SignatureConstants.ELEMENT_TYPE_ARRAY:
 			case SignatureConstants.ELEMENT_TYPE_SZARRAY:
-				return new ArrayValueMirror(vm, readObjectMirror());
+				return new ArrayValueMirror(vm, readObjectMirror());    */
 			case VALUE_TYPE_ID_NULL:
 				return new NoObjectValueMirror(vm);
-			case VALUE_TYPE_ID_TYPE:
-				return new TypeValueMirror(vm, readTypeMirror());
+			//case VALUE_TYPE_ID_TYPE:
+			//	return new TypeValueMirror(vm, readTypeMirror());
 			default:
 				throw new IllegalArgumentException("Unsupported tag: 0x" + Integer.toHexString(tag));
 		}

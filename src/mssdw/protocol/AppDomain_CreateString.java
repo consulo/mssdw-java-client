@@ -39,6 +39,6 @@ public class AppDomain_CreateString implements AppDomain
 
 	private AppDomain_CreateString(VirtualMachineImpl vm, PacketStream ps)
 	{
-		value = new StringValueMirror(vm, ps.readObjectMirror());
+		value = new StringValueMirror(vm, "");
 	}
 }

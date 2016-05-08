@@ -28,6 +28,7 @@ package mssdw;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import mssdw.event.EventQueue;
 import mssdw.request.EventRequestManager;
 
@@ -72,7 +73,11 @@ import mssdw.request.EventRequestManager;
  */
 public interface VirtualMachine extends Mirror
 {
+	@Nullable
+	TypeMirror findTypeByQualifiedName(@Nullable String vmQName);
+
 	@NotNull
+	@Deprecated
 	AppDomainMirror rootAppDomain();
 
 	/**
@@ -89,7 +94,7 @@ public interface VirtualMachine extends Mirror
 	 * completed their execution are not included in the returned list.
 	 *
 	 * @return a list of {@link ThreadMirror} objects, one for each
-	 *         running thread in the mirrored VM.
+	 * running thread in the mirrored VM.
 	 */
 	@NotNull
 	List<ThreadMirror> allThreads();
@@ -145,8 +150,8 @@ public interface VirtualMachine extends Mirror
 	 * by a {@link mssdw.connect.LaunchingConnector}
 	 *
 	 * @return the {@link java.lang.Process} object for this virtual
-	 *         machine, or null if it was not launched by a
-	 *         {@link mssdw.connect.LaunchingConnector}.
+	 * machine, or null if it was not launched by a
+	 * {@link mssdw.connect.LaunchingConnector}.
 	 */
 	@NotNull
 	Process process();

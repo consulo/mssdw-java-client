@@ -1,7 +1,6 @@
 package mssdw;
 
 import org.jetbrains.annotations.NotNull;
-import mssdw.protocol.StringReference_GetValue;
 
 /**
  * @author VISTALL
@@ -9,38 +8,25 @@ import mssdw.protocol.StringReference_GetValue;
  */
 public class StringValueMirror extends ValueImpl<String>
 {
-	private final ObjectValueMirror myObjectValueMirror;
+	private final String myValue;
 
-	public StringValueMirror(VirtualMachine aVm, ObjectValueMirror objectValueMirror)
+	public StringValueMirror(VirtualMachine aVm, String value)
 	{
 		super(aVm);
-		myObjectValueMirror = objectValueMirror;
-	}
-
-	@NotNull
-	public ObjectValueMirror object()
-	{
-		return myObjectValueMirror;
+		myValue = value;
 	}
 
 	@NotNull
 	@Override
 	public String value()
 	{
-		try
-		{
-			return StringReference_GetValue.process(vm, myObjectValueMirror).value;
-		}
-		catch(JDWPException e)
-		{
-			throw e.asUncheckedException();
-		}
+		return myValue;
 	}
 
 	@Override
 	public TypeMirror type()
 	{
-		return virtualMachine().rootAppDomain().corlibAssembly().findTypeByQualifiedName(TypeTag.String.getType(), false);
+		return virtualMachine().findTypeByQualifiedName(TypeTag.String.getType());
 	}
 
 	@Override
