@@ -43,7 +43,7 @@ public abstract class FieldOrPropertyMirror extends CustomAttributeMirrorOwner i
 	@NotNull
 	public abstract TypeMirror type();
 
-	public abstract Value<?> value(@Nullable ThreadMirror threadMirror, @Nullable ObjectValueMirror thisObjectValue);
+	public abstract Value<?> value(@NotNull StackFrameMirror stackFrameMirror, @Nullable ObjectValueMirror thisObjectValue);
 
-	public abstract void setValue(@Nullable ThreadMirror threadMirror, @Nullable ObjectValueMirror thisObjectValue, @NotNull Value<?> value);
+	public abstract void setValue(@NotNull StackFrameMirror stackFrameMirror, @Nullable ObjectValueMirror thisObjectValue, @NotNull Value<?> value);
 }

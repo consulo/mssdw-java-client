@@ -79,40 +79,40 @@ public class PropertyMirror extends FieldOrPropertyMirror
 	}
 
 	@Override
-	public Value<?> value(@Nullable ThreadMirror threadMirror, @Nullable ObjectValueMirror thisObjectValue)
+	public Value<?> value(@Nullable StackFrameMirror stackFrameMirror, @Nullable ObjectValueMirror thisObjectValue)
 	{
 		if(isStatic() && thisObjectValue != null || !isStatic() && thisObjectValue == null)
 		{
 			throw new IllegalArgumentException();
 		}
 
-		if(threadMirror == null)
+		if(stackFrameMirror == null)
 		{
 			throw new IllegalArgumentException("No thread mirror");
 		}
 		if(myGetMethod != null)
 		{
-			return myGetMethod.invoke(threadMirror, InvokeFlags.DISABLE_BREAKPOINTS, thisObjectValue);
+			return myGetMethod.invoke(stackFrameMirror.thread(), InvokeFlags.DISABLE_BREAKPOINTS, thisObjectValue);
 		}
 		return null;
 	}
 
 	@Override
-	public void setValue(@Nullable ThreadMirror threadMirror, @Nullable ObjectValueMirror thisObjectValue, @NotNull Value<?> value)
+	public void setValue(@Nullable StackFrameMirror stackFrameMirror, @Nullable ObjectValueMirror thisObjectValue, @NotNull Value<?> value)
 	{
 		if(isStatic() && thisObjectValue != null || !isStatic() && thisObjectValue == null)
 		{
 			throw new IllegalArgumentException();
 		}
 
-		if(threadMirror == null)
+		if(stackFrameMirror == null)
 		{
 			throw new IllegalArgumentException("No thread mirror");
 		}
 
 		if(mySetMethod != null)
 		{
-			mySetMethod.invoke(threadMirror, InvokeFlags.DISABLE_BREAKPOINTS, thisObjectValue, value);
+			mySetMethod.invoke(stackFrameMirror.thread(), InvokeFlags.DISABLE_BREAKPOINTS, thisObjectValue, value);
 		}
 	}
 

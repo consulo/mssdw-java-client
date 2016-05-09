@@ -3,7 +3,7 @@ package mssdw;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import edu.arizona.cs.mbel.signature.FieldAttributes;
-import mssdw.protocol.ObjectReference_GetValues;
+import mssdw.protocol.ObjectReference_GetValue;
 import mssdw.protocol.ObjectReference_SetValues;
 import mssdw.protocol.Type_GetFieldCustomAttributes;
 import mssdw.protocol.Type_GetValues;
@@ -26,7 +26,7 @@ public class FieldMirror extends FieldOrPropertyMirror
 	}
 
 	@Override
-	public Value<?> value(@Nullable ThreadMirror threadMirror, @Nullable ObjectValueMirror thisObjectValue)
+	public Value<?> value(@NotNull StackFrameMirror stackFrameMirror, @Nullable ObjectValueMirror thisObjectValue)
 	{
 		if(isStatic() && thisObjectValue != null || !isStatic() && thisObjectValue == null)
 		{
@@ -42,8 +42,8 @@ public class FieldMirror extends FieldOrPropertyMirror
 			}
 			else
 			{
-				ObjectReference_GetValues process = ObjectReference_GetValues.process(vm, thisObjectValue, this);
-				return process.values[0];
+				ObjectReference_GetValue process = ObjectReference_GetValue.process(vm, thisObjectValue, this);
+				return process.value;
 			}
 		}
 		catch(JDWPException e)
@@ -54,7 +54,7 @@ public class FieldMirror extends FieldOrPropertyMirror
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public void setValue(@Nullable ThreadMirror threadMirror, @Nullable ObjectValueMirror thisObjectValue, @NotNull Value<?> value)
+	public void setValue(@Nullable StackFrameMirror stackFrameMirror, @Nullable ObjectValueMirror thisObjectValue, @NotNull Value<?> value)
 	{
 		if(isStatic() && thisObjectValue != null || !isStatic() && thisObjectValue == null)
 		{
