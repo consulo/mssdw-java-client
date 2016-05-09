@@ -101,7 +101,7 @@ public class TypeMirror extends CustomAttributeMirrorOwner implements MirrorWith
 	public TypeMirror baseType()
 	{
 		TypeRef baseTypeRef = info().baseTypeRef;
-		if(baseTypeRef.getModuleNameId() == 0)
+		if(baseTypeRef == null)
 		{
 			return null;
 		}

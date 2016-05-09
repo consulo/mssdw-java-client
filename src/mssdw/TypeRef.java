@@ -2,13 +2,15 @@ package mssdw;
 
 import java.util.List;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * @author VISTALL
  * @since 5/6/2016
  */
 public class TypeRef
 {
-	private int myModuleNameId;
+	private String myModuleName;
 
 	private int myClassToken;
 
@@ -20,9 +22,9 @@ public class TypeRef
 
 	private List<Integer> myArrayLowerBounds;
 
-	public TypeRef(int moduleNameId, int classToken, boolean isPointer, boolean isByRef, List<Integer> arraySizes, List<Integer> arrayLowerBounds)
+	public TypeRef(@NotNull String moduleName, int classToken, boolean isPointer, boolean isByRef, List<Integer> arraySizes, List<Integer> arrayLowerBounds)
 	{
-		myModuleNameId = moduleNameId;
+		myModuleName = moduleName;
 		myClassToken = classToken;
 		myIsPointer = isPointer;
 		myIsByRef = isByRef;
@@ -30,9 +32,9 @@ public class TypeRef
 		myArrayLowerBounds = arrayLowerBounds;
 	}
 
-	public int getModuleNameId()
+	public String getModuleName()
 	{
-		return myModuleNameId;
+		return myModuleName;
 	}
 
 	public int getClassToken()
@@ -74,7 +76,7 @@ public class TypeRef
 
 		TypeRef typeRef = (TypeRef) o;
 
-		if(myModuleNameId != typeRef.myModuleNameId)
+		if(!myModuleName.equals(typeRef.myModuleName))
 		{
 			return false;
 		}
@@ -105,7 +107,7 @@ public class TypeRef
 	@Override
 	public int hashCode()
 	{
-		int result = myModuleNameId;
+		int result = myModuleName.hashCode();
 		result = 31 * result + myClassToken;
 		result = 31 * result + (myIsPointer ? 1 : 0);
 		result = 31 * result + (myIsByRef ? 1 : 0);

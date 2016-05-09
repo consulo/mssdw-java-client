@@ -433,10 +433,15 @@ public class PacketStream
 		return null;
 	}
 
-	@NotNull
+	@Nullable
 	public TypeRef readTypeRef()
 	{
-		int moduleId = readInt();
+		boolean valid = readByteBool();
+		if(!valid)
+		{
+			return null;
+		}
+		String moduleName = readString();
 		int classId = readInt();
 		boolean isPointer = readByteBool();
 		boolean isByRef = readByteBool();
@@ -452,12 +457,13 @@ public class PacketStream
 		{
 			arrayLowerBounds.add(readInt());
 		}
-		return new TypeRef(moduleId, classId, isPointer, isByRef, arraySizes, arrayLowerBounds);
+		return new TypeRef(moduleName, classId, isPointer, isByRef, arraySizes, arrayLowerBounds);
 	}
 
 	public void writeTypeRef(@NotNull TypeRef typeRef)
 	{
-		writeInt(typeRef.getModuleNameId());
+		writeByteBool(true);
+		writeString(typeRef.getModuleName());
 		writeInt(typeRef.getClassToken());
 		writeByteBool(typeRef.isPointer());
 		writeByteBool(typeRef.isByRef());

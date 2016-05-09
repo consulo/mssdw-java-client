@@ -1,5 +1,7 @@
 package mssdw.protocol;
 
+import java.util.List;
+
 import mssdw.JDWPException;
 import mssdw.MethodMirror;
 import mssdw.PacketStream;
@@ -16,25 +18,20 @@ public class VirtualMachine_InvokeMethod implements VirtualMachine
 {
 	static final int COMMAND = 7;
 
-	public static VirtualMachine_InvokeMethod process(VirtualMachineImpl vm,
-			StackFrameMirror stackFrameMirror,
-			MethodMirror methodMirror,
-			Value<?> thisObjectMirror,
-			Value<?>... arguments) throws JDWPException
+	public static VirtualMachine_InvokeMethod process(VirtualMachineImpl vm, StackFrameMirror stackFrameMirror, MethodMirror methodMirror, List<Value<?>> arguments) throws JDWPException
 	{
-		PacketStream ps = enqueueCommand(vm, stackFrameMirror, methodMirror, thisObjectMirror, arguments);
+		PacketStream ps = enqueueCommand(vm, stackFrameMirror, methodMirror, arguments);
 		return waitForReply(vm, ps);
 	}
 
-	static PacketStream enqueueCommand(VirtualMachineImpl vm, StackFrameMirror stackFrameMirror, MethodMirror methodMirror, Value<?> thisObjectMirror, Value<?>[] arguments)
+	static PacketStream enqueueCommand(VirtualMachineImpl vm, StackFrameMirror stackFrameMirror, MethodMirror methodMirror, List<Value<?>> arguments)
 	{
 		PacketStream ps = new PacketStream(vm, COMMAND_SET, COMMAND);
 		ps.writeInt(stackFrameMirror.thread().id());
 		ps.writeInt(stackFrameMirror.id());
 		ps.writeTypeRef(methodMirror.getTypeRef());
 		ps.writeInt(methodMirror.id());
-		ps.writeValue(thisObjectMirror);
-		ps.writeInt(arguments.length);
+		ps.writeInt(arguments.size());
 		for(Value<?> argument : arguments)
 		{
 			ps.writeValue(argument);

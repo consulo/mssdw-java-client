@@ -1,6 +1,7 @@
 package mssdw;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
@@ -100,7 +101,7 @@ public class MethodMirror extends CustomAttributeMirrorOwner implements MirrorWi
 	public TypeMirror returnType()
 	{
 		TypeRef returnType = paramInfo().returnType;
-		if(returnType.getModuleNameId() == 0)
+		if(returnType == null)
 		{
 			return null;
 		}
@@ -116,8 +117,13 @@ public class MethodMirror extends CustomAttributeMirrorOwner implements MirrorWi
 		}
 		try
 		{
-			thisObject = thisObject == null ? new NoObjectValueMirror(vm) : thisObject;
-			return VirtualMachine_InvokeMethod.process(vm, stackFrameMirror, this, thisObject, arguments).getValue();
+			List<Value<?>> list = new ArrayList<Value<?>>(arguments.length + 1);
+			if(thisObject != null)
+			{
+				list.add(thisObject);
+			}
+			Collections.addAll(list, arguments);
+			return VirtualMachine_InvokeMethod.process(vm, stackFrameMirror, this, list).getValue();
 		}
 		catch(JDWPException e)
 		{
