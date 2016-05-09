@@ -23,7 +23,7 @@ public class Thread_GetFrameInfo implements Thread
 	static PacketStream enqueueCommand(VirtualMachineImpl vm, ThreadMirror thread)
 	{
 		PacketStream ps = new PacketStream(vm, COMMAND_SET, COMMAND);
-		ps.writeId(thread);
+		ps.writeInt(thread.id());
 		ps.send();
 		return ps;
 	}

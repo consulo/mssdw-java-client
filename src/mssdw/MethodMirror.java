@@ -7,7 +7,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import edu.arizona.cs.mbel.signature.MethodAttributes;
 import mssdw.protocol.Method_GetCustomAttributes;
-import mssdw.protocol.Method_GetDebugInfo;
 import mssdw.protocol.Method_GetInfo;
 import mssdw.protocol.Method_GetLocalsInfo;
 import mssdw.protocol.Method_GetName;
@@ -20,15 +19,11 @@ import mssdw.protocol.VirtualMachine_InvokeMethod;
  */
 public class MethodMirror extends CustomAttributeMirrorOwner implements MirrorWithId, ModifierOwner
 {
-	private static final Method_GetDebugInfo.Entry[] EMPTY_ENTRIES = new Method_GetDebugInfo.Entry[0];
-
 	private TypeMirror myDeclarationType;
 	private Method_GetParamInfo myParamInfo;
 	private Method_GetInfo myInfo;
 	private Method_GetLocalsInfo myLocalsInfo;
 
-	private int myMaxCodeIndex = Integer.MIN_VALUE;
-	private Method_GetDebugInfo.Entry[] myDebugEntries;
 	private TypeRef myTypeRef;
 
 	public MethodMirror(@NotNull VirtualMachine aVm, @NotNull TypeRef typeRef, int id)
@@ -100,11 +95,6 @@ public class MethodMirror extends CustomAttributeMirrorOwner implements MirrorWi
 		return paramInfo().genericParameterCount;
 	}
 
-	public int maxCodeIndex()
-	{
-		debugInfo();
-		return myMaxCodeIndex;
-	}
 
 	@Nullable
 	public TypeMirror returnType()
@@ -133,26 +123,6 @@ public class MethodMirror extends CustomAttributeMirrorOwner implements MirrorWi
 		{
 			throw e.asUncheckedException();
 		}
-	}
-
-	@NotNull
-	public Method_GetDebugInfo.Entry[] debugInfo()
-	{
-		if(myMaxCodeIndex == Integer.MIN_VALUE)
-		{
-			try
-			{
-				Method_GetDebugInfo process = Method_GetDebugInfo.process(vm, this);
-				myDebugEntries = process.entries;
-				myMaxCodeIndex = process.maxIndex;
-			}
-			catch(JDWPException e)
-			{
-				myMaxCodeIndex = -1;
-				myDebugEntries = EMPTY_ENTRIES;
-			}
-		}
-		return myDebugEntries;
 	}
 
 	@NotNull

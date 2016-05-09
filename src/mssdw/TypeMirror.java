@@ -14,7 +14,6 @@ import mssdw.protocol.Type_GetInfo;
 import mssdw.protocol.Type_GetInterfaces;
 import mssdw.protocol.Type_GetMethods;
 import mssdw.protocol.Type_GetProperties;
-import mssdw.protocol.Type_IsAssignableFrom;
 import mssdw.util.BitUtil;
 
 /**
@@ -85,14 +84,17 @@ public class TypeMirror extends CustomAttributeMirrorOwner implements MirrorWith
 
 	public boolean isAssignableFrom(@NotNull TypeMirror typeMirror)
 	{
-		try
+		TypeRef typeRef = typeMirror.getTypeRef();
+		return typeRef.equals(myTypeRef);
+		// FIXME [VISTALL] for now we check only by equal
+		/*try
 		{
 			return Type_IsAssignableFrom.process(vm, this, typeMirror).value;
 		}
 		catch(JDWPException e)
 		{
 			throw e.asUncheckedException();
-		}
+		}*/
 	}
 
 	@Nullable

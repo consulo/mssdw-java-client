@@ -19,11 +19,10 @@ public class Thread_GetName implements Thread
 		return waitForReply(vm, ps);
 	}
 
-	static PacketStream enqueueCommand(
-			VirtualMachineImpl vm, ThreadMirror thread)
+	static PacketStream enqueueCommand(VirtualMachineImpl vm, ThreadMirror thread)
 	{
 		PacketStream ps = new PacketStream(vm, COMMAND_SET, COMMAND);
-		ps.writeId(thread);
+		ps.writeInt(thread.id());
 		ps.send();
 		return ps;
 	}

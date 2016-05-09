@@ -1,7 +1,6 @@
 package mssdw.protocol;
 
 import mssdw.JDWPException;
-import mssdw.MethodMirror;
 import mssdw.PacketStream;
 import mssdw.PropertyMirror;
 import mssdw.TypeMirror;
@@ -24,7 +23,7 @@ public class Type_GetProperties implements Type
 	static PacketStream enqueueCommand(VirtualMachineImpl vm, TypeMirror typeMirror)
 	{
 		PacketStream ps = new PacketStream(vm, COMMAND_SET, COMMAND);
-		ps.writeId(typeMirror);
+		ps.writeTypeRef(typeMirror.getTypeRef());
 		ps.send();
 		return ps;
 	}
@@ -43,13 +42,12 @@ public class Type_GetProperties implements Type
 		properties = new PropertyMirror[size];
 		for(int i = 0; i < size; i++)
 		{
-			int id = ps.readId();
+			int id = ps.readInt();
 			String name = ps.readString();
-			MethodMirror getMethod = ps.readMethodMirror();
-			MethodMirror setMethod = ps.readMethodMirror();
 			int attributes = ps.readInt();
-			properties[i] = new PropertyMirror(vm, id, name, getMethod, setMethod, parent, attributes);
+			int getMethodId = ps.readInt();
+			int setMethodId = ps.readInt();
+			properties[i] = new PropertyMirror(vm, id, name, getMethodId, setMethodId, parent, attributes);
 		}
 	}
-
 }

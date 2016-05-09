@@ -146,7 +146,7 @@ public class PacketStream
 	@Deprecated
 	public void writeId(@Nullable MirrorWithId data)
 	{
-		writeInt(data == null ? 0 : data.id());
+		throw new UnsupportedOperationException();
 	}
 
 	public void writeValue(Value<?> value)
@@ -616,9 +616,7 @@ public class PacketStream
 	 */
 	public Location readLocation()
 	{
-		MethodMirror methodRef = readMethodMirror();
-		int codeIndex = readInt();
-		return new LocationImpl(vm, methodRef, codeIndex);
+		throw new UnsupportedOperationException();
 	}
 
 	byte[] readByteArray(int length)

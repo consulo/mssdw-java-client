@@ -13,18 +13,17 @@ public class PropertyMirror extends FieldOrPropertyMirror
 	private final MethodMirror myGetMethod;
 	private final MethodMirror mySetMethod;
 
-	public PropertyMirror(
-			@NotNull VirtualMachine aVm,
+	public PropertyMirror(@NotNull VirtualMachine aVm,
 			int id,
 			@NotNull String name,
-			@Nullable MethodMirror getMethod,
-			@Nullable MethodMirror setMethod,
+			int getMethodId,
+			int setMethodId,
 			@NotNull TypeMirror parent,
 			int attributes)
 	{
 		super(aVm, id, parent, attributes, name);
-		myGetMethod = getMethod;
-		mySetMethod = setMethod;
+		myGetMethod = getMethodId == 0 ? null : new MethodMirror(aVm, parent.getTypeRef(), getMethodId);
+		mySetMethod = setMethodId == 0 ? null : new MethodMirror(aVm, parent.getTypeRef(), setMethodId);
 	}
 
 	public MethodMirror methodGet()
@@ -39,11 +38,11 @@ public class PropertyMirror extends FieldOrPropertyMirror
 
 	/**
 	 * In .NET bytecode - index method like
-	 *
+	 * <p/>
 	 * T this[int index]
 	 * {
 	 * }
-	 *
+	 * <p/>
 	 * Stored in bytecode as Property with name `Item`.
 	 * And accessors methods have +1 parameter(index)
 	 * For original properties - get have no parameters, set - have one parameter
