@@ -6,7 +6,7 @@ import edu.arizona.cs.mbel.signature.FieldAttributes;
 import mssdw.protocol.ObjectReference_GetValue;
 import mssdw.protocol.ObjectReference_SetValues;
 import mssdw.protocol.Type_GetFieldCustomAttributes;
-import mssdw.protocol.Type_GetValues;
+import mssdw.protocol.Type_GetValue;
 import mssdw.protocol.Type_SetValues;
 import mssdw.util.ImmutablePair;
 
@@ -37,8 +37,8 @@ public class FieldMirror extends FieldOrPropertyMirror
 		{
 			if(thisObjectValue == null)
 			{
-				Type_GetValues process = Type_GetValues.process(vm, parent(), this);
-				return process.values[0];
+				Type_GetValue process = Type_GetValue.process(vm, parent(), this, stackFrameMirror);
+				return process.value;
 			}
 			else
 			{
