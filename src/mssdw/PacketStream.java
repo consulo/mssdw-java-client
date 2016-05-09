@@ -578,10 +578,12 @@ public class PacketStream
 				return new StructValueMirror(vm, typeMirror, values);*/
 			case SignatureConstants.ELEMENT_TYPE_CLASS:
 			case SignatureConstants.ELEMENT_TYPE_OBJECT:
-				return readObjectMirror(); /*
+				return readObjectMirror();
 			case SignatureConstants.ELEMENT_TYPE_ARRAY:
 			case SignatureConstants.ELEMENT_TYPE_SZARRAY:
-				return new ArrayValueMirror(vm, readObjectMirror());    */
+				ObjectValueMirror valueMirror = readObjectMirror();
+				int length = readInt();
+				return new ArrayValueMirror(vm, length, valueMirror);
 			case VALUE_TYPE_ID_NULL:
 				return new NoObjectValueMirror(vm);
 			//case VALUE_TYPE_ID_TYPE:

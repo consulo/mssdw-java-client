@@ -1,8 +1,7 @@
 package mssdw;
 
 import org.jetbrains.annotations.NotNull;
-import mssdw.protocol.ArrayReference_GetLength;
-import mssdw.protocol.ArrayReference_GetValues;
+import mssdw.protocol.ArrayReference_GetValue;
 import mssdw.protocol.ArrayReference_SetValues;
 
 /**
@@ -11,31 +10,14 @@ import mssdw.protocol.ArrayReference_SetValues;
  */
 public class ArrayValueMirror extends ValueImpl<Object> implements MirrorWithId
 {
+	private int myLength;
 	private final ObjectValueMirror myObjectValueMirror;
-	private ArrayReference_GetLength.DimensionInfo[] myInfos;
 
-	public ArrayValueMirror(VirtualMachine aVm, ObjectValueMirror objectValueMirror)
+	public ArrayValueMirror(VirtualMachine aVm, int length, ObjectValueMirror objectValueMirror)
 	{
 		super(aVm);
+		myLength = length;
 		myObjectValueMirror = objectValueMirror;
-	}
-
-	@NotNull
-	private ArrayReference_GetLength.DimensionInfo[] dimensionInfos()
-	{
-		if(myInfos != null)
-		{
-			return myInfos;
-		}
-		try
-		{
-			myInfos = ArrayReference_GetLength.process(vm, myObjectValueMirror).dimensions;
-			return myInfos;
-		}
-		catch(JDWPException e)
-		{
-			throw e.asUncheckedException();
-		}
 	}
 
 	@NotNull
@@ -43,7 +25,7 @@ public class ArrayValueMirror extends ValueImpl<Object> implements MirrorWithId
 	{
 		try
 		{
-			return ArrayReference_GetValues.process(vm, myObjectValueMirror, index, 1).values[0];
+			return ArrayReference_GetValue.process(vm, myObjectValueMirror, index).value;
 		}
 		catch(JDWPException e)
 		{
@@ -65,17 +47,7 @@ public class ArrayValueMirror extends ValueImpl<Object> implements MirrorWithId
 
 	public int length()
 	{
-		return length(0);
-	}
-
-	public int length(int dimension)
-	{
-		return dimensionInfos()[dimension].size;
-	}
-
-	public int dimensionSize()
-	{
-		return myInfos.length;
+		return myLength;
 	}
 
 	@Override
@@ -106,7 +78,7 @@ public class ArrayValueMirror extends ValueImpl<Object> implements MirrorWithId
 	public String toString()
 	{
 		StringBuilder builder = new StringBuilder();
-		builder.append("ArrayValue { type = ").append(type()).append(", length = ").append(length(0)).append(" }");
+		builder.append("ArrayValue { type = ").append(type()).append(", length = ").append(length()).append(" }");
 		return builder.toString();
 	}
 
