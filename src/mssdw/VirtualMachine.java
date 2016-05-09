@@ -79,10 +79,6 @@ public interface VirtualMachine extends Mirror
 	@Nullable
 	DebugInformationResult findDebugOffset(@NotNull String path, int line, int column);
 
-	@NotNull
-	@Deprecated
-	AppDomainMirror rootAppDomain();
-
 	/**
 	 * Returns a list of the currently running threads. For each
 	 * running thread in the target VM, a {@link ThreadMirror}

@@ -184,13 +184,6 @@ public class VirtualMachineImpl extends MirrorImpl implements VirtualMachine
 
 	@NotNull
 	@Override
-	public AppDomainMirror rootAppDomain()
-	{
-		throw new UnsupportedOperationException();
-	}
-
-	@NotNull
-	@Override
 	public List<ThreadMirror> allThreads()
 	{
 		return state.allThreads();

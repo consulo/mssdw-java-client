@@ -153,7 +153,8 @@ public class PacketStream
 	{
 		if(value instanceof StringValueMirror)
 		{
-		//	writeValue(((StringValueMirror) value).object());
+			writeByte(SignatureConstants.ELEMENT_TYPE_STRING);
+			writeInt(((StringValueMirror) value).id());
 		}
 		else if(value instanceof CharValueMirror)
 		{
@@ -192,7 +193,7 @@ public class PacketStream
 		else if(value instanceof ObjectValueMirror)
 		{
 			writeByte(SignatureConstants.ELEMENT_TYPE_OBJECT);
-			writeId((ObjectValueMirror) value);
+			writeInt(((ObjectValueMirror) value).id());
 		}
 		else if(value instanceof NoObjectValueMirror)
 		{
@@ -424,23 +425,6 @@ public class PacketStream
 		return new ThreadMirror(vm, ref);
 	}
 
-	@Nullable
-	@Deprecated
-	public AssemblyMirror readAssemblyMirror()
-	{
-		return null;
-	}
-
-	@Nullable
-	public AppDomainMirror readAppDomainMirror()
-	{
-		int ref = readId();
-		if(ref == 0)
-		{
-			return null;
-		}
-		return new AppDomainMirror(vm, ref);
-	}
 
 	@Nullable
 	@Deprecated
@@ -558,7 +542,9 @@ public class PacketStream
 			case SignatureConstants.ELEMENT_TYPE_R8:
 				return new NumberValueMirror(vm, tag, readDouble());
 			case SignatureConstants.ELEMENT_TYPE_STRING:
-				return new StringValueMirror(vm, readString());
+				int id = readInt();
+				String value = readString();
+				return new StringValueMirror(vm, id, value);
 			case SignatureConstants.ELEMENT_TYPE_CHAR:
 				return new CharValueMirror(vm, (char) readInt());
 			/*case SignatureConstants.ELEMENT_TYPE_VALUETYPE:

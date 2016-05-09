@@ -502,33 +502,6 @@ public class JDWP
 					}
 				}
 
-				public static class AssemblyOnly extends ModifierCommon
-				{
-					static final byte ALT_ID = 11;
-
-					public static Modifier create(AssemblyMirror... mirrors)
-					{
-						return new Modifier(ALT_ID, new AssemblyOnly(mirrors));
-					}
-
-					final AssemblyMirror[] myAssemblyMirrors;
-
-					AssemblyOnly(AssemblyMirror... assemblyMirrors)
-					{
-						this.myAssemblyMirrors = assemblyMirrors;
-					}
-
-					@Override
-					void write(PacketStream ps, VirtualMachineImpl vm)
-					{
-						ps.writeInt(myAssemblyMirrors.length);
-						for(AssemblyMirror mirror : myAssemblyMirrors)
-						{
-							ps.writeId(mirror);
-						}
-					}
-				}
-
 				/**
 				 * Restricts reported class prepare events to those
 				 * for reference types which have a source name

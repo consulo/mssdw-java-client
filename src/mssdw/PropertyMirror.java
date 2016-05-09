@@ -92,7 +92,7 @@ public class PropertyMirror extends FieldOrPropertyMirror
 		}
 		if(myGetMethod != null)
 		{
-			return myGetMethod.invoke(stackFrameMirror.thread(), InvokeFlags.DISABLE_BREAKPOINTS, thisObjectValue);
+			return myGetMethod.invoke(stackFrameMirror, thisObjectValue);
 		}
 		return null;
 	}
@@ -112,7 +112,7 @@ public class PropertyMirror extends FieldOrPropertyMirror
 
 		if(mySetMethod != null)
 		{
-			mySetMethod.invoke(stackFrameMirror.thread(), InvokeFlags.DISABLE_BREAKPOINTS, thisObjectValue, value);
+			mySetMethod.invoke(stackFrameMirror, thisObjectValue, value);
 		}
 	}
 

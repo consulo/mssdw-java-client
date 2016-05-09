@@ -118,13 +118,7 @@ public class MethodMirror extends CustomAttributeMirrorOwner implements MirrorWi
 	}
 
 	@Nullable
-	public Value<?> invoke(@NotNull ThreadMirror threadMirror, @Nullable Value<?> thisObject, Value<?>... arguments)
-	{
-		return invoke(threadMirror, InvokeFlags.NONE, thisObject, arguments);
-	}
-
-	@Nullable
-	public Value<?> invoke(@NotNull ThreadMirror threadMirror, @NotNull InvokeFlags invokeFlags, @Nullable Value<?> thisObject, Value<?>... arguments)
+	public Value<?> invoke(@NotNull StackFrameMirror stackFrameMirror, @Nullable Value<?> thisObject, Value<?>... arguments)
 	{
 		if(arguments.length != parameters().length)
 		{
@@ -133,7 +127,7 @@ public class MethodMirror extends CustomAttributeMirrorOwner implements MirrorWi
 		try
 		{
 			thisObject = thisObject == null ? new NoObjectValueMirror(vm) : thisObject;
-			return VirtualMachine_InvokeMethod.process(vm, threadMirror, invokeFlags, this, thisObject, arguments).getValue();
+			return VirtualMachine_InvokeMethod.process(vm, stackFrameMirror, this, thisObject, arguments).getValue();
 		}
 		catch(JDWPException e)
 		{

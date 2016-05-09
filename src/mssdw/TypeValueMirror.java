@@ -21,7 +21,7 @@ public class TypeValueMirror extends ValueImpl<TypeMirror>
 	@Override
 	public TypeMirror type()
 	{
-		return vm.rootAppDomain().corlibAssembly().findTypeByQualifiedName("System.Type", false);
+		return vm.findTypeByQualifiedName("System.Type");
 	}
 
 	@NotNull

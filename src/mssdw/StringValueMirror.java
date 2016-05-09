@@ -8,12 +8,19 @@ import org.jetbrains.annotations.NotNull;
  */
 public class StringValueMirror extends ValueImpl<String>
 {
+	private int myId;
 	private final String myValue;
 
-	public StringValueMirror(VirtualMachine aVm, String value)
+	public StringValueMirror(VirtualMachine aVm, int id, String value)
 	{
 		super(aVm);
+		myId = id;
 		myValue = value;
+	}
+
+	public int id()
+	{
+		return myId;
 	}
 
 	@NotNull

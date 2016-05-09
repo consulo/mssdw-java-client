@@ -24,7 +24,6 @@
  */
 package mssdw.request;
 
-import mssdw.AssemblyMirror;
 import mssdw.EventRequestManagerImpl;
 import mssdw.JDWP;
 import mssdw.VirtualMachine;
@@ -54,18 +53,5 @@ public abstract class TypeVisibleEventRequest extends ThreadVisibleEventRequest
 		}
 
 		filters.add(JDWP.EventRequest.Set.Modifier.TypeNameFilter.create(qNames));
-	}
-
-	public synchronized void addAssemblyFilter(AssemblyMirror... mirrors)
-	{
-		for(AssemblyMirror mirror : mirrors)
-		{
-			validateMirror(mirror);
-		}
-		if(isEnabled() || deleted)
-		{
-			throw invalidState();
-		}
-		filters.add(JDWP.EventRequest.Set.Modifier.AssemblyOnly.create(mirrors));
 	}
 }
