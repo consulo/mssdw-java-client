@@ -21,7 +21,7 @@ public class CharValueMirror extends ValueImpl<Character>
 	@Override
 	public TypeMirror type()
 	{
-		return virtualMachine().rootAppDomain().corlibAssembly().findTypeByQualifiedName(TypeTag.Char.getType(), false);
+		return virtualMachine().findTypeByQualifiedName(TypeTag.Char.getType());
 	}
 
 	@NotNull

@@ -29,7 +29,7 @@ public class NumberValueMirror extends ValueImpl<Number>
 	public TypeMirror type()
 	{
 		String type = TypeTag.typeByTag(myTag);
-		return virtualMachine().rootAppDomain().corlibAssembly().findTypeByQualifiedName(type, false);
+		return virtualMachine().findTypeByQualifiedName(type);
 	}
 
 	@Override

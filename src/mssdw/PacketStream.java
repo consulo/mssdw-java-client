@@ -540,7 +540,7 @@ public class PacketStream
 				return new VoidValueMirror(vm);
 			case SignatureConstants.ELEMENT_TYPE_BOOLEAN:
 				return new BooleanValueMirror(vm, readByteBool());
-			/*case SignatureConstants.ELEMENT_TYPE_I1:
+			case SignatureConstants.ELEMENT_TYPE_I1:
 			case SignatureConstants.ELEMENT_TYPE_U1:
 				return new NumberValueMirror(vm, tag, readInt());
 			case SignatureConstants.ELEMENT_TYPE_U2:
@@ -556,12 +556,12 @@ public class PacketStream
 			case SignatureConstants.ELEMENT_TYPE_R4:
 				return new NumberValueMirror(vm, tag, readFloat());
 			case SignatureConstants.ELEMENT_TYPE_R8:
-				return new NumberValueMirror(vm, tag, readDouble());  */
+				return new NumberValueMirror(vm, tag, readDouble());
 			case SignatureConstants.ELEMENT_TYPE_STRING:
 				return new StringValueMirror(vm, readString());
-			/*case SignatureConstants.ELEMENT_TYPE_CHAR:
+			case SignatureConstants.ELEMENT_TYPE_CHAR:
 				return new CharValueMirror(vm, (char) readInt());
-			case SignatureConstants.ELEMENT_TYPE_VALUETYPE:
+			/*case SignatureConstants.ELEMENT_TYPE_VALUETYPE:
 				boolean isEnum = readByte() == 1;
 				TypeMirror typeMirror = readTypeMirror();
 				assert typeMirror != null;
