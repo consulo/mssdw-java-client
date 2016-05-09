@@ -31,6 +31,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import mssdw.connect.spi.Connection;
 import mssdw.event.EventQueue;
+import mssdw.protocol.VirtualMachine_FindDebugOffset;
 import mssdw.protocol.VirtualMachine_FindType;
 import mssdw.protocol.VirtualMachine_GetVersion;
 import mssdw.request.EventRequestManager;
@@ -81,7 +82,7 @@ public class VirtualMachineImpl extends MirrorImpl implements VirtualMachine
 		threadGroupForJDI = new ThreadGroup(vmManager.mainGroupForJDI(), "Mono Soft Debugger [" + this.hashCode() + "]");
 
         /*
-         * Set up a thread to communicate with the target VM over
+		 * Set up a thread to communicate with the target VM over
          * the specified transport.
          */
 		target = new TargetVM(this, connection);
@@ -160,6 +161,20 @@ public class VirtualMachineImpl extends MirrorImpl implements VirtualMachine
 				return null;
 			}
 			return new TypeMirror(this, type);
+		}
+		catch(JDWPException e)
+		{
+			throw e.asUncheckedException();
+		}
+	}
+
+	@Nullable
+	@Override
+	public DebugInformationResult findDebugOffset(@NotNull String path, int line, int column)
+	{
+		try
+		{
+			return VirtualMachine_FindDebugOffset.process(this, path, line, column).result;
 		}
 		catch(JDWPException e)
 		{

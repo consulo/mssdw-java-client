@@ -603,28 +603,24 @@ public class JDWP
 				{
 					static final byte ALT_ID = 50;
 
-					public static Modifier create(String path, int lineNumber, int columnNumber)
+					public static Modifier create(DebugInformationResult debugInformationResult)
 					{
-						return new Modifier(ALT_ID, new BreakpointLocation(path, lineNumber, columnNumber));
+						return new Modifier(ALT_ID, new BreakpointLocation(debugInformationResult));
 					}
 
-					private String myPath;
-					private int myLineNumber;
-					private int myColumnNumber;
+					private DebugInformationResult myDebugInformationResult;
 
-					public BreakpointLocation(String path, int lineNumber, int columnNumber)
+					public BreakpointLocation(DebugInformationResult debugInformationResult)
 					{
-						myPath = path;
-						myLineNumber = lineNumber;
-						myColumnNumber = columnNumber;
+						myDebugInformationResult = debugInformationResult;
 					}
 
 					@Override
 					void write(PacketStream ps, VirtualMachineImpl vm)
 					{
-						ps.writeString(myPath);
-						ps.writeInt(myLineNumber);
-						ps.writeInt(myColumnNumber);
+						ps.writeString(myDebugInformationResult.getModuleName());
+						ps.writeInt(myDebugInformationResult.getMethodToken());
+						ps.writeInt(myDebugInformationResult.getOffset());
 					}
 				}
 			}

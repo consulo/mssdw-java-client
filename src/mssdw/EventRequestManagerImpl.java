@@ -117,10 +117,11 @@ public class EventRequestManagerImpl extends MirrorImpl implements EventRequestM
 		return add(new MethodExitRequest(vm, this));
 	}
 
+	@NotNull
 	@Override
-	public BreakpointRequest createBreakpointRequest(String path, int line, int column)
+	public BreakpointRequest createBreakpointRequest(@NotNull DebugInformationResult debugInformationResult)
 	{
-		return add(new BreakpointRequest(vm, this, path, line, column));
+		return add(new BreakpointRequest(vm, this, debugInformationResult));
 	}
 
 	@Override

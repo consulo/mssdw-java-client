@@ -76,6 +76,9 @@ public interface VirtualMachine extends Mirror
 	@Nullable
 	TypeMirror findTypeByQualifiedName(@Nullable String vmQName);
 
+	@Nullable
+	DebugInformationResult findDebugOffset(@NotNull String path, int line, int column);
+
 	@NotNull
 	@Deprecated
 	AppDomainMirror rootAppDomain();

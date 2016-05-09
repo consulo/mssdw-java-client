@@ -30,6 +30,7 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import mssdw.DebugInformationResult;
 import mssdw.Location;
 import mssdw.Mirror;
 import mssdw.NativeMethodException;
@@ -171,20 +172,8 @@ public interface EventRequestManager extends Mirror
 	 */
 	StepRequest createStepRequest(ThreadMirror thread, StepRequest.StepSize size, StepRequest.StepDepth depth);
 
-	/**
-	 * Creates a new disabled {@link BreakpointRequest}.
-	 * The given {@link Location} must have a valid
-	 * (that is, non-negative) code index. The new
-	 * breakpoint is added to the list managed by this
-	 * EventRequestManager. Multiple breakpoints at the
-	 * same location are permitted. Use {@link EventRequest#enable()} to
-	 * activate this event request.
-	 *
-	 * @param location the location of the new breakpoint.
-	 * @return the created {@link BreakpointRequest}
-	 * @throws NativeMethodException if location is within a native method.
-	 */
-	BreakpointRequest createBreakpointRequest(String path, int line, int column);
+	@NotNull
+	BreakpointRequest createBreakpointRequest(@NotNull DebugInformationResult result);
 
 	/**
 	 * Creates a new disabled {@link VMDeathRequest}.

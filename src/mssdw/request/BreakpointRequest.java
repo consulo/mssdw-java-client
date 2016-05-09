@@ -25,44 +25,21 @@
 
 package mssdw.request;
 
+import mssdw.DebugInformationResult;
 import mssdw.EventKind;
 import mssdw.EventRequestManagerImpl;
 import mssdw.JDWP;
-import mssdw.Location;
 import mssdw.VirtualMachine;
 
-/**
- * Identifies a {@link Location} in the target VM at which
- * execution should be stopped. When an enabled BreakpointRequest is
- * satisfied, an
- * {@link mssdw.event.EventSet event set} containing an
- * {@link mssdw.event.BreakpointEvent BreakpointEvent}
- * will be placed on the
- * {@link mssdw.event.EventQueue EventQueue} and
- * the application is interrupted. The collection of existing breakpoints is
- * managed by the {@link EventRequestManager}
- *
- * @see Location
- * @see mssdw.event.BreakpointEvent
- * @see mssdw.event.EventQueue
- * @see EventRequestManager
- *
- * @author Robert Field
- * @since  1.3
- */
 public class BreakpointRequest extends TypeVisibleEventRequest
 {
-	private String myPath;
-	private int myLine;
-	private int myColumn;
+	private DebugInformationResult myDebugInformationResult;
 
-	public BreakpointRequest(VirtualMachine virtualMachine, EventRequestManagerImpl requestManager, String path, int line, int column)
+	public BreakpointRequest(VirtualMachine virtualMachine, EventRequestManagerImpl requestManager, DebugInformationResult debugInformationResult)
 	{
 		super(virtualMachine, requestManager);
-		myPath = path;
-		myLine = line;
-		myColumn = column;
-		filters.add(0, JDWP.EventRequest.Set.Modifier.BreakpointLocation.create(path, line, column));
+		myDebugInformationResult = debugInformationResult;
+		filters.add(0, JDWP.EventRequest.Set.Modifier.BreakpointLocation.create(debugInformationResult));
 	}
 
 	@Override
@@ -74,6 +51,6 @@ public class BreakpointRequest extends TypeVisibleEventRequest
 	@Override
 	public String toString()
 	{
-		return "breakpoint request at " + myPath + ":" + myLine + ":" + myColumn + " " + state();
+		return "breakpoint request at " + myDebugInformationResult + " " + state();
 	}
 }
