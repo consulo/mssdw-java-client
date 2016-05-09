@@ -32,25 +32,14 @@ public class VirtualMachine_GetVersion implements VirtualMachine
 	}
 
 
-	/**
-	 * Text information on the VM version
-	 */
 	public final String description;
-
-	/**
-	 * Major DWP Version number
-	 */
-	public final int jdwpMajor;
-
-	/**
-	 * Minor DWP Version number
-	 */
-	public final int jdwpMinor;
+	public final int majorVersion;
+	public final int minorVersion;
 
 	private VirtualMachine_GetVersion(VirtualMachineImpl vm, PacketStream ps)
 	{
 		description = ps.readString();
-		jdwpMajor = ps.readInt();
-		jdwpMinor = ps.readInt();
+		majorVersion = ps.readInt();
+		minorVersion = ps.readInt();
 	}
 }

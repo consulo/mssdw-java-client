@@ -104,9 +104,9 @@ public class VirtualMachineImpl extends MirrorImpl implements VirtualMachine
 		{
 			myVersionInfo = VirtualMachine_GetVersion.process(vm);
 
-			if(myVersionInfo.jdwpMajor != vmManager.majorInterfaceVersion())
+			if(myVersionInfo.majorVersion != vmManager.majorInterfaceVersion())
 			{
-				throw new IllegalArgumentException("Virtual Machine major version is not equal client: " + myVersionInfo.jdwpMajor);
+				throw new IllegalArgumentException("Virtual Machine major version is not equal client: " + myVersionInfo.majorVersion);
 			}
 		}
 		catch(JDWPException e)
@@ -318,7 +318,7 @@ public class VirtualMachineImpl extends MirrorImpl implements VirtualMachine
 	@Override
 	public boolean isAtLeastVersion(int major, int minor)
 	{
-		return (myVersionInfo.jdwpMajor > major) || ((myVersionInfo.jdwpMajor == major && myVersionInfo.jdwpMinor >= minor));
+		return (myVersionInfo.majorVersion > major) || ((myVersionInfo.majorVersion == major && myVersionInfo.minorVersion >= minor));
 	}
 
 	@Override
@@ -347,7 +347,7 @@ public class VirtualMachineImpl extends MirrorImpl implements VirtualMachine
 	@Override
 	public String version()
 	{
-		return myVersionInfo.jdwpMajor + "." + myVersionInfo.jdwpMinor;
+		return myVersionInfo.majorVersion + "." + myVersionInfo.minorVersion;
 	}
 
 	@NotNull
