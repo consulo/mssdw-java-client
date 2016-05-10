@@ -70,11 +70,12 @@ public class EventRequestManagerImpl extends MirrorImpl implements EventRequestM
 		return add(new ExceptionRequest(refType, notifyCaught, notifyUncaught, notifyOnSubclasses, vm, this));
 	}
 
+	@NotNull
 	@Override
-	public StepRequest createStepRequest(ThreadMirror thread, StepRequest.StepSize size, StepRequest.StepDepth depth)
+	public StepRequest createStepRequest(ThreadMirror thread, StepRequest.StepDepth depth)
 	{
 		validateMirror(thread);
-		return add(new StepRequest(thread, size, depth, vm, this));
+		return add(new StepRequest(thread, depth, vm, this));
 	}
 
 	@Override

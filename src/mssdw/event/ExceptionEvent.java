@@ -46,13 +46,13 @@ import mssdw.VirtualMachine;
  * @author Robert Field
  * @since 1.3
  */
-public class ExceptionEvent extends LocatableEvent implements Event
+public class ExceptionEvent extends ThreadedEvent implements Event
 {
 	private ObjectValueMirror exception;
 
 	public ExceptionEvent(VirtualMachine virtualMachine, JDWP.Event.Composite.Events.Exception evt)
 	{
-		super(virtualMachine, evt, evt.requestID, evt.thread, evt.location);
+		super(virtualMachine, evt, evt.requestID, evt.thread);
 		this.exception = evt.exception;
 	}
 

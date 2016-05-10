@@ -277,12 +277,6 @@ public class PacketStream
 		}
 	}
 
-	void writeLocation(Location location)
-	{
-		writeInt((int) location.method().id());
-		writeLong(location.codeIndex());
-	}
-
 	/**
 	 * @return unsigned byte
 	 */
@@ -615,14 +609,6 @@ public class PacketStream
 			customAttributeMirrors[i] = new CustomAttributeMirror(vm, constructorMirror, values, namedValues);
 		}
 		return customAttributeMirrors;
-	}
-
-	/**
-	 * Read location represented as vm specific byte sequence.
-	 */
-	public Location readLocation()
-	{
-		throw new UnsupportedOperationException();
 	}
 
 	byte[] readByteArray(int length)

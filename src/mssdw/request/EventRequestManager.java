@@ -31,9 +31,7 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import mssdw.DebugInformationResult;
-import mssdw.Location;
 import mssdw.Mirror;
-import mssdw.NativeMethodException;
 import mssdw.ThreadMirror;
 import mssdw.TypeMirror;
 import mssdw.VirtualMachine;
@@ -119,58 +117,8 @@ public interface EventRequestManager extends Mirror
 	@NotNull
 	MethodExitRequest createMethodExitRequest();
 
-	/**
-	 * Creates a new disabled {@link StepRequest}.
-	 * The new event request is added to the list managed by this
-	 * EventRequestManager. Use {@link EventRequest#enable()} to
-	 * activate this event request.
-	 * <p/>
-	 * The returned request will control stepping only in the specified
-	 * <code>thread</code>; all other threads will be unaffected.
-	 * A <code>size</code>value of {@link StepRequest#STEP_MIN} will generate a
-	 * step event each time the code index changes. It represents the
-	 * smallest step size available and often maps to the instruction
-	 * level.
-	 * A <code>size</code> value of {@link StepRequest#STEP_LINE} will generate a
-	 * step event each time the source line changes unless line number information is not available,
-	 * in which case a STEP_MIN will be done instead.  For example, no line number information is
-	 * available during the execution of a method that has been rendered obsolete by
-	 * by a {@link mssdw.VirtualMachine#redefineClasses} operation.
-	 * A <code>depth</code> value of {@link StepRequest#STEP_INTO} will generate
-	 * step events in any called methods.  A <code>depth</code> value
-	 * of {@link StepRequest#STEP_OVER} restricts step events to the current frame
-	 * or caller frames. A <code>depth</code> value of {@link StepRequest#STEP_OUT}
-	 * restricts step events to caller frames only. All depth
-	 * restrictions are relative to the call stack immediately before the
-	 * step takes place.
-	 * <p/>
-	 * Only one pending step request is allowed per thread.
-	 * <p/>
-	 * Note that a typical debugger will want to cancel stepping
-	 * after the first step is detected.  Thus a next line method
-	 * would do the following:
-	 * <code>
-	 * <pre>
-	 *     EventRequestManager mgr = myVM.{@link VirtualMachine#eventRequestManager eventRequestManager}();
-	 *     StepRequest request = mgr.createStepRequest(myThread,
-	 *                                                 StepRequest.{@link StepRequest#STEP_LINE STEP_LINE},
-	 *                                                 StepRequest.{@link StepRequest#STEP_OVER STEP_OVER});
-	 *     request.{@link EventRequest#addCountFilter addCountFilter}(1);  // next step only
-	 *     request.enable();
-	 *     myVM.{@link VirtualMachine#resume resume}();
-	 * </pre>
-	 * </code>
-	 *
-	 * @param thread the thread in which to step
-	 * @param depth  the step depth
-	 * @param size   the step size
-	 * @return the created {@link StepRequest}
-	 * @throws DuplicateRequestException if there is already a pending
-	 *                                   step request for the specified thread.
-	 * @throws IllegalArgumentException  if the size or depth arguments
-	 *                                   contain illegal values.
-	 */
-	StepRequest createStepRequest(ThreadMirror thread, StepRequest.StepSize size, StepRequest.StepDepth depth);
+	@NotNull
+	StepRequest createStepRequest(ThreadMirror thread, StepRequest.StepDepth depth);
 
 	@NotNull
 	BreakpointRequest createBreakpointRequest(@NotNull DebugInformationResult result);

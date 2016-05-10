@@ -47,11 +47,11 @@ import mssdw.VirtualMachine;
  * @author Robert Field
  * @since  1.3
  */
-public class StepEvent extends LocatableEvent
+public class StepEvent extends ThreadedEvent
 {
 	public StepEvent(VirtualMachine virtualMachine, JDWP.Event.Composite.Events.Step evt)
 	{
-		super(virtualMachine, evt, evt.requestID, evt.thread, evt.location);
+		super(virtualMachine, evt, evt.requestID, evt.thread);
 	}
 
 	@Override

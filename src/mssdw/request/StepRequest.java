@@ -58,21 +58,13 @@ public class StepRequest extends TypeVisibleEventRequest
 		Out
 	}
 
-	public enum StepSize
-	{
-		Min,
-		Line
-	}
-
 	private ThreadMirror thread;
-	private StepSize size;
 	private StepDepth depth;
 
-	public StepRequest(ThreadMirror thread, StepSize size, StepDepth depth, VirtualMachineImpl vm, EventRequestManagerImpl requestManager)
+	public StepRequest(ThreadMirror thread, StepDepth depth, VirtualMachineImpl vm, EventRequestManagerImpl requestManager)
 	{
 		super(vm, requestManager);
 		this.thread = thread;
-		this.size = size;
 		this.depth = depth;
 
             /*
@@ -91,17 +83,12 @@ public class StepRequest extends TypeVisibleEventRequest
 			}
 		}
 
-		filters.add(JDWP.EventRequest.Set.Modifier.Step.create(this.thread, size, depth));
+		filters.add(JDWP.EventRequest.Set.Modifier.Step.create(this.thread, depth));
 	}
 
 	public StepDepth depth()
 	{
 		return depth;
-	}
-
-	public StepSize size()
-	{
-		return size;
 	}
 
 	public ThreadMirror thread()

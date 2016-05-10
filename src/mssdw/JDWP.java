@@ -371,39 +371,6 @@ public class JDWP
 				}
 
 				/**
-				 * Restricts reported events to those that occur at
-				 * the given location.
-				 * This modifier can be used with
-				 * breakpoint, field access, field modification,
-				 * step, and exception event kinds.
-				 */
-				public static class LocationOnly extends ModifierCommon
-				{
-					static final byte ALT_ID = 7;
-
-					public static Modifier create(Location loc)
-					{
-						return new Modifier(ALT_ID, new LocationOnly(loc));
-					}
-
-					/**
-					 * Required location
-					 */
-					final Location loc;
-
-					LocationOnly(Location loc)
-					{
-						this.loc = loc;
-					}
-
-					@Override
-					void write(PacketStream ps, VirtualMachineImpl vm)
-					{
-						ps.writeLocation(loc);
-					}
-				}
-
-				/**
 				 * Restricts reported exceptions by their class and
 				 * whether they are caught or uncaught.
 				 * This modifier can be used with
@@ -460,45 +427,25 @@ public class JDWP
 				{
 					static final byte ALT_ID = 10;
 
-					public static Modifier create(ThreadMirror thread, StepRequest.StepSize size, StepRequest.StepDepth depth)
+					public static Modifier create(ThreadMirror thread, StepRequest.StepDepth depth)
 					{
-						return new Modifier(ALT_ID, new Step(thread, size, depth));
+						return new Modifier(ALT_ID, new Step(thread, depth));
 					}
 
-					/**
-					 * Thread in which to step
-					 */
 					final ThreadMirror thread;
-
-					/**
-					 * size of each step.
-					 * See <a href="#JDWP_StepSize">JDWP.StepSize</a>
-					 */
-					final StepRequest.StepSize size;
-
-					/**
-					 * relative call stack limit.
-					 * See <a href="#JDWP_StepDepth">JDWP.StepDepth</a>
-					 */
 					final StepRequest.StepDepth depth;
 
-					Step(ThreadMirror thread, StepRequest.StepSize size, StepRequest.StepDepth depth)
+					Step(ThreadMirror thread,  StepRequest.StepDepth depth)
 					{
 						this.thread = thread;
-						this.size = size;
 						this.depth = depth;
 					}
 
 					@Override
 					void write(PacketStream ps, VirtualMachineImpl vm)
 					{
-						ps.writeId(thread);
-						ps.writeInt(size.ordinal());
+						ps.writeInt(thread.id());
 						ps.writeInt(depth.ordinal());
-						if(vm.isAtLeastVersion(2, 16))
-						{
-							ps.writeInt(0); //TODO [VISTALL] filter
-						}
 					}
 				}
 
@@ -929,13 +876,11 @@ public class JDWP
 
 					public final int requestID;
 					public final ThreadMirror thread;
-					public final Location location;
 
 					Step(VirtualMachineImpl vm, PacketStream ps)
 					{
 						requestID = ps.readInt();
 						thread = ps.readThreadMirror();
-						location = ps.readLocation();
 					}
 				}
 
@@ -1056,11 +1001,6 @@ public class JDWP
 					 */
 					public final ThreadMirror thread;
 
-					/**
-					 * Location of exception throw
-					 * (or first non-native location after throw if thrown from a native method)
-					 */
-					public final Location location;
 
 					/**
 					 * Thrown exception
@@ -1072,7 +1012,6 @@ public class JDWP
 						requestID = ps.readInt();
 						thread = ps.readThreadMirror();
 						exception = ps.readObjectMirror();
-						location = null; //FIXME [VISTALL] we can't read from mono?
 					}
 				}
 

@@ -29,7 +29,6 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
-import mssdw.Location;
 import mssdw.Mirror;
 import mssdw.SuspendPolicy;
 import mssdw.ThreadMirror;
