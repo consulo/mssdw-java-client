@@ -29,7 +29,7 @@ public class VirtualMachine_InvokeMethod implements VirtualMachine
 		PacketStream ps = new PacketStream(vm, COMMAND_SET, COMMAND);
 		ps.writeInt(stackFrameMirror.thread().id());
 		ps.writeInt(stackFrameMirror.id());
-		ps.writeTypeRef(methodMirror.getTypeRef());
+		ps.writeTypeRef(methodMirror.declarationTypeRef());
 		ps.writeInt(methodMirror.id());
 		ps.writeInt(arguments.size());
 		for(Value<?> argument : arguments)

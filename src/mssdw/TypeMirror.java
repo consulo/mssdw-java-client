@@ -242,7 +242,7 @@ public class TypeMirror extends CustomAttributeMirrorOwner implements MirrorWith
 	}
 
 	@NotNull
-	public CustomAttributeMirror[] customAttributesImpl() throws JDWPException
+	public String[] customAttributesImpl() throws JDWPException
 	{
 		return Type_GetCustomAttributes.process(vm, this).customAttributeMirrors;
 	}

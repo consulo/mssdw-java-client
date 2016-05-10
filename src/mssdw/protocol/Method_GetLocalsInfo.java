@@ -25,7 +25,7 @@ public class Method_GetLocalsInfo implements Method
 	static PacketStream enqueueCommand(VirtualMachineImpl vm, MethodMirror methodMirror, StackFrameMirror stackFrameMirror)
 	{
 		PacketStream ps = new PacketStream(vm, COMMAND_SET, COMMAND);
-		ps.writeTypeRef(methodMirror.getTypeRef());
+		ps.writeTypeRef(methodMirror.declarationTypeRef());
 		ps.writeInt(methodMirror.id());
 		ps.writeInt(stackFrameMirror.thread().id());
 		ps.writeInt(stackFrameMirror.id());

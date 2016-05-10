@@ -24,7 +24,7 @@ public class Method_GetParamInfo implements Method
 	static PacketStream enqueueCommand(VirtualMachineImpl vm, MethodMirror methodMirror)
 	{
 		PacketStream ps = new PacketStream(vm, COMMAND_SET, COMMAND);
-		ps.writeTypeRef(methodMirror.getTypeRef());
+		ps.writeTypeRef(methodMirror.declarationTypeRef());
 		ps.writeInt(methodMirror.id());
 		ps.send();
 		return ps;

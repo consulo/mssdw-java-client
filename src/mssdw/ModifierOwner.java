@@ -9,10 +9,7 @@ import org.jetbrains.annotations.NotNull;
 public interface ModifierOwner
 {
 	@NotNull
-	CustomAttributeMirror[] customAttributes();
-
-	@NotNull
-	CustomAttributeMirror[] findCustomAttributes(@NotNull String vmQName);
+	String[] customAttributes();
 
 	boolean isStatic();
 

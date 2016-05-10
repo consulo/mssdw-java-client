@@ -570,35 +570,15 @@ public class PacketStream
 	}
 
 	@NotNull
-	public CustomAttributeMirror[] readCustomAttributes()
+	public String[] readCustomAttributes()
 	{
 		int size = readInt();
-		CustomAttributeMirror[] customAttributeMirrors = new CustomAttributeMirror[size];
+		String[] array = new String[size];
 		for(int i = 0; i < size; i++)
 		{
-			MethodMirror constructorMirror = readMethodMirror();
-			int constructorValueSize = readInt();
-			Value[] values = new Value[constructorValueSize];
-			for(int j = 0; j < constructorValueSize; j++)
-			{
-				Value value = readValue();
-				values[j] = value;
-			}
-
-			int namedConstructorValueSize = readInt();
-			NamedValue[] namedValues = new NamedValue[namedConstructorValueSize];
-			for(int j = 0; j < namedConstructorValueSize; j++)
-			{
-				boolean property = (readByte() & 0xFF) == 0x54;
-				int fieldOrPropertyId = readInt();
-				Value value = readValue();
-
-				NamedValue namedValue = new NamedValue(value, fieldOrPropertyId, property);
-				namedValues[j] = namedValue;
-			}
-			customAttributeMirrors[i] = new CustomAttributeMirror(vm, constructorMirror, values, namedValues);
+			array[i] = readString();
 		}
-		return customAttributeMirrors;
+		return array;
 	}
 
 	byte[] readByteArray(int length)

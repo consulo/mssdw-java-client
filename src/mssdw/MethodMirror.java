@@ -25,17 +25,18 @@ public class MethodMirror extends CustomAttributeMirrorOwner implements MirrorWi
 	private Method_GetInfo myInfo;
 	private Method_GetLocalsInfo myLocalsInfo;
 
-	private TypeRef myTypeRef;
+	private TypeRef myDeclarationTypeRef;
 
-	public MethodMirror(@NotNull VirtualMachine aVm, @NotNull TypeRef typeRef, int id)
+	public MethodMirror(@NotNull VirtualMachine aVm, @NotNull TypeRef declarationTypeRef, int id)
 	{
 		super(aVm, id);
-		myTypeRef = typeRef;
+		myDeclarationTypeRef = declarationTypeRef;
 	}
 
-	public TypeRef getTypeRef()
+	@NotNull
+	public TypeRef declarationTypeRef()
 	{
-		return myTypeRef;
+		return myDeclarationTypeRef;
 	}
 
 	public Method_GetParamInfo paramInfo()
@@ -151,7 +152,7 @@ public class MethodMirror extends CustomAttributeMirrorOwner implements MirrorWi
 	}
 
 	@Override
-	protected CustomAttributeMirror[] customAttributesImpl() throws JDWPException
+	protected String[] customAttributesImpl() throws JDWPException
 	{
 		return Method_GetCustomAttributes.process(vm, this).customAttributeMirrors;
 	}
@@ -171,7 +172,7 @@ public class MethodMirror extends CustomAttributeMirrorOwner implements MirrorWi
 			return myDeclarationType;
 		}
 
-		return myDeclarationType = new TypeMirror(virtualMachine(), getTypeRef());
+		return myDeclarationType = new TypeMirror(virtualMachine(), declarationTypeRef());
 	}
 
 	@Override

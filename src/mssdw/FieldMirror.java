@@ -91,7 +91,7 @@ public class FieldMirror extends FieldOrPropertyMirror
 
 	@NotNull
 	@Override
-	public CustomAttributeMirror[] customAttributesImpl() throws JDWPException
+	public String[] customAttributesImpl() throws JDWPException
 	{
 		return Type_GetFieldCustomAttributes.process(vm, parent(), this).customAttributeMirrors;
 	}

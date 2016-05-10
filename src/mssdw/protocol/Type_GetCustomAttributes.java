@@ -4,7 +4,6 @@ import mssdw.JDWPException;
 import mssdw.PacketStream;
 import mssdw.TypeMirror;
 import mssdw.VirtualMachineImpl;
-import mssdw.CustomAttributeMirror;
 
 /**
  * @author VISTALL
@@ -23,8 +22,7 @@ public class Type_GetCustomAttributes implements Type
 	static PacketStream enqueueCommand(VirtualMachineImpl vm, TypeMirror typeMirror)
 	{
 		PacketStream ps = new PacketStream(vm, COMMAND_SET, COMMAND);
-		ps.writeId(typeMirror);
-		ps.writeInt(0); // attribute id
+		ps.writeTypeRef(typeMirror.getTypeRef());
 		ps.send();
 		return ps;
 	}
@@ -35,7 +33,7 @@ public class Type_GetCustomAttributes implements Type
 		return new Type_GetCustomAttributes(vm, ps, typeMirror);
 	}
 
-	public final CustomAttributeMirror[] customAttributeMirrors;
+	public final String[] customAttributeMirrors;
 
 	private Type_GetCustomAttributes(VirtualMachineImpl vm, PacketStream ps, TypeMirror parent)
 	{
