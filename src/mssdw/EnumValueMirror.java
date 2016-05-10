@@ -9,9 +9,9 @@ import org.jetbrains.annotations.Nullable;
  */
 public class EnumValueMirror extends ValueTypeValueMirror<Value<?>>
 {
-	public EnumValueMirror(VirtualMachine aVm, @NotNull TypeMirror typeMirror, Value[] values)
+	public EnumValueMirror(int id, long address, VirtualMachine aVm, @NotNull TypeMirror typeMirror, Value[] values)
 	{
-		super(aVm, typeMirror, values);
+		super(id, address, aVm, typeMirror, values);
 	}
 
 	@Override

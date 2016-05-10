@@ -90,12 +90,6 @@ public class PacketStream
 		}
 	}
 
-	@Deprecated
-	public void writeIntBool(boolean data)
-	{
-		writeInt(data ? 1 : 0);
-	}
-
 	public void writeByteBool(boolean data)
 	{
 		writeByte((byte) (data ? 1 : 0));
@@ -295,16 +289,6 @@ public class PacketStream
 		byte ret = pkt.data[inCursor];
 		inCursor += 1;
 		return ret;
-	}
-
-	/**
-	 * Read boolean represented as 4 byte.
-	 */
-	@Deprecated
-	public boolean readIntBool()
-	{
-		int ret = readInt();
-		return (ret != 0);
 	}
 
 	public boolean readByteBool()
@@ -542,26 +526,32 @@ public class PacketStream
 			case SignatureConstants.ELEMENT_TYPE_R8:
 				return new NumberValueMirror(vm, tag, readDouble());
 			case SignatureConstants.ELEMENT_TYPE_STRING:
+			{
 				int id = readInt();
 				String value = readString();
 				return new StringValueMirror(vm, id, value);
+			}
 			case SignatureConstants.ELEMENT_TYPE_CHAR:
 				return new CharValueMirror(vm, (char) readInt());
-			/*case SignatureConstants.ELEMENT_TYPE_VALUETYPE:
-				boolean isEnum = readByte() == 1;
-				TypeMirror typeMirror = readTypeMirror();
-				assert typeMirror != null;
+			case SignatureConstants.ELEMENT_TYPE_VALUETYPE:
+			{
+				int id = readInt();
+				long address = readLong();
+				TypeRef typeRef = readTypeRef();
+				boolean isEnum = readByteBool();
 				int fieldCount = readInt();
 				Value[] values = new Value[fieldCount];
 				for(int i = 0; i < fieldCount; i++)
 				{
 					values[i] = readValue();
 				}
+				TypeMirror typeMirror = new TypeMirror(vm, typeRef);
 				if(isEnum)
 				{
-					return new EnumValueMirror(vm, typeMirror, values);
+					return new EnumValueMirror(id, address, vm, typeMirror, values);
 				}
-				return new StructValueMirror(vm, typeMirror, values);*/
+				return new StructValueMirror(id, address, vm, typeMirror, values);
+			}
 			case SignatureConstants.ELEMENT_TYPE_CLASS:
 			case SignatureConstants.ELEMENT_TYPE_OBJECT:
 				return readObjectMirror();

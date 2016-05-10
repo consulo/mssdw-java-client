@@ -20,9 +20,9 @@ public class StructValueMirror extends ValueTypeValueMirror<Object>
 {
 	public static final Pattern BackingFieldPattern = Pattern.compile("<([\\S\\d]+)>k__BackingField");
 
-	public StructValueMirror(VirtualMachine aVm, @NotNull TypeMirror typeMirror, @NotNull Value[] values)
+	public StructValueMirror(int id, long address, VirtualMachine aVm, @NotNull TypeMirror typeMirror, @NotNull Value[] values)
 	{
-		super(aVm, typeMirror, values);
+		super(id, address, aVm, typeMirror, values);
 	}
 
 	@NotNull
