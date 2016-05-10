@@ -101,4 +101,10 @@ public class FieldMirror extends FieldOrPropertyMirror
 	{
 		return (myAttributes & FieldAttributes.Static) == FieldAttributes.Static;
 	}
+
+	@Override
+	public boolean isAbstract()
+	{
+		return false;
+	}
 }

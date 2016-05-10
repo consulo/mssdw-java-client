@@ -253,6 +253,12 @@ public class TypeMirror extends CustomAttributeMirrorOwner implements MirrorWith
 		return !isNested();
 	}
 
+	@Override
+	public boolean isAbstract()
+	{
+		return (info().attributes & TypeAttributes.Abstract) == TypeAttributes.Abstract;
+	}
+
 	@NotNull
 	public FieldMirror[] fields()
 	{
