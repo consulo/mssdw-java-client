@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import edu.arizona.cs.mbel.signature.TypeAttributes;
+import consulo.internal.dotnet.asm.signature.TypeAttributes;
 import mssdw.protocol.Type_GetCustomAttributes;
 import mssdw.protocol.Type_GetFields;
 import mssdw.protocol.Type_GetInfo;

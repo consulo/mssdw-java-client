@@ -2,7 +2,7 @@ package mssdw;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import edu.arizona.cs.mbel.signature.FieldAttributes;
+import consulo.internal.dotnet.asm.signature.FieldAttributes;
 import mssdw.protocol.ObjectReference_GetValue;
 import mssdw.protocol.ObjectReference_SetValues;
 import mssdw.protocol.Type_GetFieldCustomAttributes;
