@@ -1,7 +1,7 @@
 package mssdw;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * @author VISTALL
@@ -9,7 +9,7 @@ import org.jetbrains.annotations.Nullable;
  */
 public class EnumValueMirror extends ValueTypeValueMirror<Value<?>>
 {
-	public EnumValueMirror(int id, long address, VirtualMachine aVm, @NotNull TypeMirror typeMirror, Value[] values)
+	public EnumValueMirror(int id, long address, VirtualMachine aVm, @Nonnull TypeMirror typeMirror, Value[] values)
 	{
 		super(id, address, aVm, typeMirror, values);
 	}
@@ -28,7 +28,7 @@ public class EnumValueMirror extends ValueTypeValueMirror<Value<?>>
 	}
 
 	@Override
-	public void accept(@NotNull ValueVisitor valueVisitor)
+	public void accept(@Nonnull ValueVisitor valueVisitor)
 	{
 		valueVisitor.visitEnumValue(this);
 	}

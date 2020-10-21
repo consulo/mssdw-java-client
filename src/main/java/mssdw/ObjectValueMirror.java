@@ -1,7 +1,7 @@
 package mssdw;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * @author VISTALL
@@ -46,7 +46,7 @@ public class ObjectValueMirror extends ValueImpl<Object> implements MirrorWithId
 	}
 
 	@Override
-	public void accept(@NotNull ValueVisitor valueVisitor)
+	public void accept(@Nonnull ValueVisitor valueVisitor)
 	{
 		valueVisitor.visitObjectValue(this);
 	}

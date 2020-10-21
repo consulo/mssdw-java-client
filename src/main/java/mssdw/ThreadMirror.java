@@ -28,7 +28,7 @@ package mssdw;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import mssdw.protocol.Thread_GetFrameInfo;
 import mssdw.protocol.Thread_GetName;
 import mssdw.protocol.Thread_GetState;
@@ -46,7 +46,7 @@ public class ThreadMirror extends MirrorWithIdAndName
 		super(aVm, aRef);
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
 	public String nameImpl() throws JDWPException
 	{
@@ -80,7 +80,7 @@ public class ThreadMirror extends MirrorWithIdAndName
 		return status().debugState == ThreadState.Suspended;
 	}
 
-	@NotNull
+	@Nonnull
 	public List<StackFrameMirror> frames()
 	{
 		try

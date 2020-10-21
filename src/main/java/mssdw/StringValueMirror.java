@@ -1,6 +1,6 @@
 package mssdw;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 /**
  * @author VISTALL
@@ -23,7 +23,7 @@ public class StringValueMirror extends ValueImpl<String>
 		return myId;
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
 	public String value()
 	{
@@ -37,7 +37,7 @@ public class StringValueMirror extends ValueImpl<String>
 	}
 
 	@Override
-	public void accept(@NotNull ValueVisitor valueVisitor)
+	public void accept(@Nonnull ValueVisitor valueVisitor)
 	{
 		valueVisitor.visitStringValue(this, value());
 	}

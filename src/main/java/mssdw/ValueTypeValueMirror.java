@@ -1,6 +1,6 @@
 package mssdw;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 /**
  * @author VISTALL
@@ -13,7 +13,7 @@ public abstract class ValueTypeValueMirror<T> extends ValueImpl<T>
 	private TypeMirror myTypeMirror;
 	private Value[] myValues;
 
-	public ValueTypeValueMirror(int id, long address, VirtualMachine aVm, @NotNull TypeMirror typeMirror, Value... values)
+	public ValueTypeValueMirror(int id, long address, VirtualMachine aVm, @Nonnull TypeMirror typeMirror, Value... values)
 	{
 		super(aVm);
 		myId = id;
@@ -34,13 +34,13 @@ public abstract class ValueTypeValueMirror<T> extends ValueImpl<T>
 
 	public abstract boolean isEnum();
 
-	@NotNull
+	@Nonnull
 	public Value[] fieldValues()
 	{
 		return myValues;
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
 	public TypeMirror type()
 	{

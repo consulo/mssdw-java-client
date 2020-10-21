@@ -29,8 +29,8 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import consulo.internal.dotnet.asm.signature.SignatureConstants;
 
 public class PacketStream
@@ -396,7 +396,7 @@ public class PacketStream
 		return readInt();
 	}
 
-	@NotNull
+	@Nonnull
 	public ThreadMirror readThreadMirror()
 	{
 		int ref = readId();
@@ -438,7 +438,7 @@ public class PacketStream
 		return new TypeRef(moduleName, classId, isPointer, isByRef, arraySizes, arrayLowerBounds);
 	}
 
-	public void writeTypeRef(@NotNull TypeRef typeRef)
+	public void writeTypeRef(@Nonnull TypeRef typeRef)
 	{
 		writeByteBool(true);
 		writeString(typeRef.getModuleName());
@@ -489,7 +489,7 @@ public class PacketStream
 		return null;
 	}
 
-	@NotNull
+	@Nonnull
 	public ObjectValueMirror readObjectMirror()
 	{
 		int ref = readInt();
@@ -498,7 +498,7 @@ public class PacketStream
 		return new ObjectValueMirror(vm, ref, address, typeRef);
 	}
 
-	@NotNull
+	@Nonnull
 	public Value readValue()
 	{
 		int tag = readUByte();
@@ -569,7 +569,7 @@ public class PacketStream
 		}
 	}
 
-	@NotNull
+	@Nonnull
 	public String[] readCustomAttributes()
 	{
 		int size = readInt();

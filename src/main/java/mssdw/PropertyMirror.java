@@ -1,8 +1,10 @@
 package mssdw;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+
 import mssdw.protocol.Type_GetPropertyCustomAttributes;
+
+import javax.annotation.Nullable;
 
 /**
  * @author VISTALL
@@ -13,12 +15,12 @@ public class PropertyMirror extends FieldOrPropertyMirror
 	private final MethodMirror myGetMethod;
 	private final MethodMirror mySetMethod;
 
-	public PropertyMirror(@NotNull VirtualMachine aVm,
+	public PropertyMirror(@Nonnull VirtualMachine aVm,
 			int id,
-			@NotNull String name,
+			@Nonnull String name,
 			int getMethodId,
 			int setMethodId,
-			@NotNull TypeMirror parent,
+			@Nonnull TypeMirror parent,
 			int attributes)
 	{
 		super(aVm, id, parent, attributes, name);
@@ -61,7 +63,7 @@ public class PropertyMirror extends FieldOrPropertyMirror
 	}
 
 	@Override
-	@NotNull
+	@Nonnull
 	public TypeMirror type()
 	{
 		if(myGetMethod != null)
@@ -97,7 +99,7 @@ public class PropertyMirror extends FieldOrPropertyMirror
 	}
 
 	@Override
-	public void setValue(@Nullable StackFrameMirror stackFrameMirror, @Nullable ObjectValueMirror thisObjectValue, @NotNull Value<?> value)
+	public void setValue(@Nullable StackFrameMirror stackFrameMirror, @Nullable ObjectValueMirror thisObjectValue, @Nonnull Value<?> value)
 	{
 		if(isStatic() && thisObjectValue != null || !isStatic() && thisObjectValue == null)
 		{
@@ -143,7 +145,7 @@ public class PropertyMirror extends FieldOrPropertyMirror
 		throw new IllegalArgumentException();
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
 	public String[] customAttributesImpl() throws JDWPException
 	{

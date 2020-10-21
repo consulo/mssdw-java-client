@@ -1,6 +1,6 @@
 package mssdw;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 /**
  * @author VISTALL
@@ -20,7 +20,7 @@ public abstract class LocalVariableOrParameterMirror  extends MirrorWithIdAndNam
 		myName = name;
 	}
 
-	@NotNull
+	@Nonnull
 	public TypeMirror type()
 	{
 		if(myType != null)
@@ -36,7 +36,7 @@ public abstract class LocalVariableOrParameterMirror  extends MirrorWithIdAndNam
 		return id();
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
 	protected String nameImpl() throws JDWPException
 	{

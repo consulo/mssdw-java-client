@@ -1,10 +1,12 @@
 package mssdw;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+
 import mssdw.protocol.StackFrame_GetArgumentValue;
 import mssdw.protocol.StackFrame_GetLocalValue;
 import mssdw.protocol.StackFrame_GetThis;
+
+import javax.annotation.Nullable;
 
 /**
  * @author VISTALL
@@ -57,19 +59,19 @@ public class StackFrameMirror extends MirrorImpl implements MirrorWithId
 		return myFunctionId;
 	}
 
-	@NotNull
+	@Nonnull
 	public MethodMirror getMethod()
 	{
 		return new MethodMirror(virtualMachine(), getTypeRef(), myFunctionId);
 	}
 
-	@NotNull
+	@Nonnull
 	public ThreadMirror thread()
 	{
 		return myThreadMirror;
 	}
 
-	@NotNull
+	@Nonnull
 	public Value thisObject()
 	{
 		try

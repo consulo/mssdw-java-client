@@ -2,7 +2,7 @@ package mssdw;
 
 import java.util.List;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 /**
  * @author VISTALL
@@ -22,7 +22,7 @@ public class TypeRef
 
 	private List<Integer> myArrayLowerBounds;
 
-	public TypeRef(@NotNull String moduleName, int classToken, boolean isPointer, boolean isByRef, List<Integer> arraySizes, List<Integer> arrayLowerBounds)
+	public TypeRef(@Nonnull String moduleName, int classToken, boolean isPointer, boolean isByRef, List<Integer> arraySizes, List<Integer> arrayLowerBounds)
 	{
 		myModuleName = moduleName;
 		myClassToken = classToken;

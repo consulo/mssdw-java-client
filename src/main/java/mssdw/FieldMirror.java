@@ -1,7 +1,7 @@
 package mssdw;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+
 import consulo.internal.dotnet.asm.signature.FieldAttributes;
 import mssdw.protocol.ObjectReference_GetValue;
 import mssdw.protocol.ObjectReference_SetValues;
@@ -9,6 +9,8 @@ import mssdw.protocol.Type_GetFieldCustomAttributes;
 import mssdw.protocol.Type_GetValue;
 import mssdw.protocol.Type_SetValues;
 import mssdw.util.ImmutablePair;
+
+import javax.annotation.Nullable;
 
 /**
  * @author VISTALL
@@ -19,14 +21,14 @@ public class FieldMirror extends FieldOrPropertyMirror
 	private final TypeRef myTypeRef;
 	private TypeMirror myTypeMirror;
 
-	public FieldMirror(@NotNull VirtualMachine aVm, int id, @NotNull String name, @NotNull TypeRef typeRef, @NotNull TypeMirror parent, int attributes)
+	public FieldMirror(@Nonnull VirtualMachine aVm, int id, @Nonnull String name, @Nonnull TypeRef typeRef, @Nonnull TypeMirror parent, int attributes)
 	{
 		super(aVm, id, parent, attributes, name);
 		myTypeRef = typeRef;
 	}
 
 	@Override
-	public Value<?> value(@NotNull StackFrameMirror stackFrameMirror, @Nullable ObjectValueMirror thisObjectValue)
+	public Value<?> value(@Nonnull StackFrameMirror stackFrameMirror, @Nullable ObjectValueMirror thisObjectValue)
 	{
 		if(isStatic() && thisObjectValue != null || !isStatic() && thisObjectValue == null)
 		{
@@ -54,7 +56,7 @@ public class FieldMirror extends FieldOrPropertyMirror
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public void setValue(@Nullable StackFrameMirror stackFrameMirror, @Nullable ObjectValueMirror thisObjectValue, @NotNull Value<?> value)
+	public void setValue(@Nullable StackFrameMirror stackFrameMirror, @Nullable ObjectValueMirror thisObjectValue, @Nonnull Value<?> value)
 	{
 		if(isStatic() && thisObjectValue != null || !isStatic() && thisObjectValue == null)
 		{
@@ -79,7 +81,7 @@ public class FieldMirror extends FieldOrPropertyMirror
 	}
 
 	@Override
-	@NotNull
+	@Nonnull
 	public TypeMirror type()
 	{
 		if(myTypeMirror != null)
@@ -89,7 +91,7 @@ public class FieldMirror extends FieldOrPropertyMirror
 		return myTypeMirror = new TypeMirror(virtualMachine(), myTypeRef);
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
 	public String[] customAttributesImpl() throws JDWPException
 	{

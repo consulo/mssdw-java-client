@@ -25,8 +25,8 @@
 
 package mssdw.request;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import mssdw.EventKind;
 import mssdw.EventRequestManagerImpl;
 import mssdw.JDWP;
@@ -65,7 +65,7 @@ public class ExceptionRequest extends TypeVisibleEventRequest
 		filters.add(0, JDWP.EventRequest.Set.Modifier.ExceptionOnly.create(refType, notifyCaught, notifyUncaught, notifyOnSubclasses));
 	}
 
-	@NotNull
+	@Nonnull
 	public TypeMirror exception()
 	{
 		return exception;

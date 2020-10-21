@@ -1,6 +1,6 @@
 package mssdw;
 
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 import mssdw.request.StepRequest;
 
 public class JDWP

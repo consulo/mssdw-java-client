@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import consulo.internal.dotnet.asm.signature.MethodAttributes;
 import mssdw.protocol.Method_GetCustomAttributes;
 import mssdw.protocol.Method_GetInfo;
@@ -27,13 +27,13 @@ public class MethodMirror extends CustomAttributeMirrorOwner implements MirrorWi
 
 	private TypeRef myDeclarationTypeRef;
 
-	public MethodMirror(@NotNull VirtualMachine aVm, @NotNull TypeRef declarationTypeRef, int id)
+	public MethodMirror(@Nonnull VirtualMachine aVm, @Nonnull TypeRef declarationTypeRef, int id)
 	{
 		super(aVm, id);
 		myDeclarationTypeRef = declarationTypeRef;
 	}
 
-	@NotNull
+	@Nonnull
 	public TypeRef declarationTypeRef()
 	{
 		return myDeclarationTypeRef;
@@ -110,7 +110,7 @@ public class MethodMirror extends CustomAttributeMirrorOwner implements MirrorWi
 	}
 
 	@Nullable
-	public Value<?> invoke(@NotNull StackFrameMirror stackFrameMirror, @Nullable Value<?> thisObject, Value<?>... arguments)
+	public Value<?> invoke(@Nonnull StackFrameMirror stackFrameMirror, @Nullable Value<?> thisObject, Value<?>... arguments)
 	{
 		if(arguments.length != parameters().length)
 		{
@@ -132,8 +132,8 @@ public class MethodMirror extends CustomAttributeMirrorOwner implements MirrorWi
 		}
 	}
 
-	@NotNull
-	public LocalVariableMirror[] locals(@NotNull StackFrameMirror stackFrameMirror)
+	@Nonnull
+	public LocalVariableMirror[] locals(@Nonnull StackFrameMirror stackFrameMirror)
 	{
 		try
 		{
@@ -157,14 +157,14 @@ public class MethodMirror extends CustomAttributeMirrorOwner implements MirrorWi
 		return Method_GetCustomAttributes.process(vm, this).customAttributeMirrors;
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
 	protected String nameImpl() throws JDWPException
 	{
 		return Method_GetName.process(vm, this).name;
 	}
 
-	@NotNull
+	@Nonnull
 	public TypeMirror declaringType()
 	{
 		if(myDeclarationType != null)

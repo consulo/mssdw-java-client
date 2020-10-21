@@ -32,9 +32,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+
 import mssdw.request.*;
+
+import javax.annotation.Nullable;
 
 /**
  * This interface is used to create and remove Breakpoints, Watchpoints,
@@ -62,7 +64,7 @@ public class EventRequestManagerImpl extends MirrorImpl implements EventRequestM
 		}
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
 	public ExceptionRequest createExceptionRequest(@Nullable TypeMirror refType, boolean notifyCaught, boolean notifyUncaught, boolean notifyOnSubclasses)
 	{
@@ -70,7 +72,7 @@ public class EventRequestManagerImpl extends MirrorImpl implements EventRequestM
 		return add(new ExceptionRequest(refType, notifyCaught, notifyUncaught, notifyOnSubclasses, vm, this));
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
 	public StepRequest createStepRequest(ThreadMirror thread, StepRequest.StepDepth depth)
 	{
@@ -84,14 +86,14 @@ public class EventRequestManagerImpl extends MirrorImpl implements EventRequestM
 		return add(new ThreadDeathRequest(vm, this));
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
 	public EventRequest createModuleLoadRequest()
 	{
 		return add(new ModuleLoadRequest(vm, this));
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
 	public EventRequest createModuleUnloadRequest()
 	{
@@ -104,23 +106,23 @@ public class EventRequestManagerImpl extends MirrorImpl implements EventRequestM
 		return add(new ThreadStartRequest(vm, this));
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
 	public MethodEntryRequest createMethodEntryRequest()
 	{
 		return add(new MethodEntryRequest(vm, this));
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
 	public MethodExitRequest createMethodExitRequest()
 	{
 		return add(new MethodExitRequest(vm, this));
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
-	public BreakpointRequest createBreakpointRequest(@NotNull DebugInformationResult debugInformationResult)
+	public BreakpointRequest createBreakpointRequest(@Nonnull DebugInformationResult debugInformationResult)
 	{
 		return add(new BreakpointRequest(vm, this, debugInformationResult));
 	}
@@ -205,14 +207,14 @@ public class EventRequestManagerImpl extends MirrorImpl implements EventRequestM
 		return (List<MethodExitRequest>) unmodifiableRequestList(EventKind.METHOD_EXIT);
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
 	public List<EventRequest> moduleLoadEventRequests()
 	{
 		return (List<EventRequest>) unmodifiableRequestList(EventKind.MODULE_LOAD);
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
 	public List<EventRequest> moduleUnloadEventRequests()
 	{

@@ -27,8 +27,8 @@ package mssdw;
 
 import java.util.List;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import mssdw.event.EventQueue;
 import mssdw.request.EventRequestManager;
 
@@ -77,7 +77,7 @@ public interface VirtualMachine extends Mirror
 	TypeMirror findTypeByQualifiedName(@Nullable String vmQName);
 
 	@Nullable
-	DebugInformationResult findDebugOffset(@NotNull String path, int line, int column);
+	DebugInformationResult findDebugOffset(@Nonnull String path, int line, int column);
 
 	/**
 	 * Returns a list of the currently running threads. For each
@@ -95,7 +95,7 @@ public interface VirtualMachine extends Mirror
 	 * @return a list of {@link ThreadMirror} objects, one for each
 	 * running thread in the mirrored VM.
 	 */
-	@NotNull
+	@Nonnull
 	List<ThreadMirror> allThreads();
 
 	/**
@@ -127,7 +127,7 @@ public interface VirtualMachine extends Mirror
 	 *
 	 * @return the {@link EventQueue} for this virtual machine.
 	 */
-	@NotNull
+	@Nonnull
 	EventQueue eventQueue();
 
 	/**
@@ -140,7 +140,7 @@ public interface VirtualMachine extends Mirror
 	 *
 	 * @return the {@link EventRequestManager} for this virtual machine.
 	 */
-	@NotNull
+	@Nonnull
 	EventRequestManager eventRequestManager();
 
 	/**
@@ -152,7 +152,7 @@ public interface VirtualMachine extends Mirror
 	 * machine, or null if it was not launched by a
 	 * {@link mssdw.connect.LaunchingConnector}.
 	 */
-	@NotNull
+	@Nonnull
 	Process process();
 
 	/**
@@ -206,14 +206,14 @@ public interface VirtualMachine extends Mirror
 	 *
 	 * @return the target VM version.
 	 */
-	@NotNull
+	@Nonnull
 	String version();
 
 	boolean isAtLeastVersion(int major, int minor);
 
-	void enableEvents(@NotNull EventKind... eventKinds);
+	void enableEvents(@Nonnull EventKind... eventKinds);
 
-	void enableEvents(@NotNull SuspendPolicy policy, @NotNull EventKind... eventKinds);
+	void enableEvents(@Nonnull SuspendPolicy policy, @Nonnull EventKind... eventKinds);
 
 	/**
 	 * Returns the name of the target VM as reported by the
@@ -221,6 +221,6 @@ public interface VirtualMachine extends Mirror
 	 *
 	 * @return the target VM name.
 	 */
-	@NotNull
+	@Nonnull
 	String name();
 }

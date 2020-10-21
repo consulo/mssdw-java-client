@@ -28,8 +28,8 @@ package mssdw.request;
 import java.util.Collection;
 import java.util.List;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import mssdw.DebugInformationResult;
 import mssdw.Mirror;
 import mssdw.ThreadMirror;
@@ -52,10 +52,10 @@ import mssdw.VirtualMachine;
 
 public interface EventRequestManager extends Mirror
 {
-	@NotNull
+	@Nonnull
 	EventRequest createModuleLoadRequest();
 
-	@NotNull
+	@Nonnull
 	EventRequest createModuleUnloadRequest();
 
 
@@ -92,7 +92,7 @@ public interface EventRequestManager extends Mirror
 	 * @param notifyUncaught If true, uncaught exceptions will be reported.
 	 * @return the created {@link ExceptionRequest}
 	 */
-	@NotNull
+	@Nonnull
 	ExceptionRequest createExceptionRequest(@Nullable TypeMirror refType, boolean notifyCaught, boolean notifyUncaught, boolean notifyOnSubclasses);
 
 	/**
@@ -103,7 +103,7 @@ public interface EventRequestManager extends Mirror
 	 *
 	 * @return the created {@link MethodEntryRequest}
 	 */
-	@NotNull
+	@Nonnull
 	MethodEntryRequest createMethodEntryRequest();
 
 	/**
@@ -114,14 +114,14 @@ public interface EventRequestManager extends Mirror
 	 *
 	 * @return the created {@link MethodExitRequest}
 	 */
-	@NotNull
+	@Nonnull
 	MethodExitRequest createMethodExitRequest();
 
-	@NotNull
+	@Nonnull
 	StepRequest createStepRequest(ThreadMirror thread, StepRequest.StepDepth depth);
 
-	@NotNull
-	BreakpointRequest createBreakpointRequest(@NotNull DebugInformationResult result);
+	@Nonnull
+	BreakpointRequest createBreakpointRequest(@Nonnull DebugInformationResult result);
 
 	/**
 	 * Creates a new disabled {@link VMDeathRequest}.
@@ -276,9 +276,9 @@ public interface EventRequestManager extends Mirror
 	 */
 	List<VMDeathRequest> vmDeathRequests();
 
-	@NotNull
+	@Nonnull
 	List<EventRequest> moduleLoadEventRequests();
 
-	@NotNull
+	@Nonnull
 	List<EventRequest> moduleUnloadEventRequests();
 }

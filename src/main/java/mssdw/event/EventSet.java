@@ -28,7 +28,7 @@ package mssdw.event;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import mssdw.Mirror;
 import mssdw.SuspendPolicy;
 import mssdw.ThreadMirror;
@@ -153,7 +153,7 @@ public interface EventSet extends Mirror, Set<Event>
 	 * {@link mssdw.request.EventRequest#SUSPEND_EVENT_THREAD SUSPEND_EVENT_THREAD} or
 	 * {@link mssdw.request.EventRequest#SUSPEND_NONE SUSPEND_NONE}.
 	 */
-	@NotNull
+	@Nonnull
 	SuspendPolicy suspendPolicy();
 
 	/**

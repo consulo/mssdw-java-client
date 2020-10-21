@@ -1,6 +1,6 @@
 package mssdw;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 /**
  * @author VISTALL
@@ -10,14 +10,14 @@ public abstract class CustomAttributeMirrorOwner extends MirrorWithIdAndName imp
 {
 	private String[] myCustomAttributeMirrors;
 
-	public CustomAttributeMirrorOwner(@NotNull VirtualMachine aVm, int id)
+	public CustomAttributeMirrorOwner(@Nonnull VirtualMachine aVm, int id)
 	{
 		super(aVm, id);
 	}
 
 	protected abstract String[] customAttributesImpl() throws JDWPException;
 
-	@NotNull
+	@Nonnull
 	@Override
 	public final String[] customAttributes()
 	{

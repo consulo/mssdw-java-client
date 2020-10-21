@@ -25,7 +25,7 @@
 
 package mssdw.event;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import mssdw.JDWP;
 import mssdw.MethodMirror;
 import mssdw.VirtualMachine;
@@ -53,7 +53,7 @@ public class MethodExitEvent extends ThreadedEvent
 		myMethodMirror = evt.method;
 	}
 
-	@NotNull
+	@Nonnull
 	public MethodMirror method()
 	{
 		return myMethodMirror;

@@ -1,7 +1,7 @@
 package mssdw;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * @author VISTALL
@@ -9,9 +9,12 @@ import org.jetbrains.annotations.Nullable;
  */
 public interface GenericTarget<T extends Mirror>
 {
-	@Nullable("Null is this is original mirror, if it a runtime copy with generic - ill return not null")
+	/**
+	 * @return Null is this is original mirror, if it a runtime copy with generic - ill return not null
+	 */
+	@Nullable
 	T original();
 
-	@NotNull
+	@Nonnull
 	TypeMirror[] genericArguments();
 }

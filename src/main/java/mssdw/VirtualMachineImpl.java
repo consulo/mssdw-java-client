@@ -27,8 +27,8 @@ package mssdw;
 
 import java.util.List;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import mssdw.connect.spi.Connection;
 import mssdw.event.EventQueue;
 import mssdw.protocol.VirtualMachine_FindDebugOffset;
@@ -170,7 +170,7 @@ public class VirtualMachineImpl extends MirrorImpl implements VirtualMachine
 
 	@Nullable
 	@Override
-	public DebugInformationResult findDebugOffset(@NotNull String path, int line, int column)
+	public DebugInformationResult findDebugOffset(@Nonnull String path, int line, int column)
 	{
 		try
 		{
@@ -182,7 +182,7 @@ public class VirtualMachineImpl extends MirrorImpl implements VirtualMachine
 		}
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
 	public List<ThreadMirror> allThreads()
 	{
@@ -264,7 +264,7 @@ public class VirtualMachineImpl extends MirrorImpl implements VirtualMachine
 		}
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
 	public EventQueue eventQueue()
 	{
@@ -276,7 +276,7 @@ public class VirtualMachineImpl extends MirrorImpl implements VirtualMachine
 		return eventQueue;
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
 	public EventRequestManager eventRequestManager()
 	{
@@ -316,7 +316,7 @@ public class VirtualMachineImpl extends MirrorImpl implements VirtualMachine
 		target.stopListening();
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
 	public Process process()
 	{
@@ -330,13 +330,13 @@ public class VirtualMachineImpl extends MirrorImpl implements VirtualMachine
 	}
 
 	@Override
-	public void enableEvents(@NotNull EventKind... eventKinds)
+	public void enableEvents(@Nonnull EventKind... eventKinds)
 	{
 		enableEvents(SuspendPolicy.ALL, eventKinds);
 	}
 
 	@Override
-	public void enableEvents(@NotNull SuspendPolicy policy, @NotNull EventKind... eventKinds)
+	public void enableEvents(@Nonnull SuspendPolicy policy, @Nonnull EventKind... eventKinds)
 	{
 		for(EventKind eventKind : eventKinds)
 		{
@@ -351,14 +351,14 @@ public class VirtualMachineImpl extends MirrorImpl implements VirtualMachine
 		}
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
 	public String version()
 	{
 		return myVersionInfo.majorVersion + "." + myVersionInfo.minorVersion;
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
 	public String name()
 	{
