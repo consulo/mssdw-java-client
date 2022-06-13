@@ -7,6 +7,7 @@ module mssdw.java.client
     requires consulo.annotation;
     requires transitive consulo.internal.dotnet.asm;
 
+    exports mssdw;
     exports mssdw.connect;
     exports mssdw.event;
     exports mssdw.request;
