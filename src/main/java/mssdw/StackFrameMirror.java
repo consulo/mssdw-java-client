@@ -1,12 +1,12 @@
 package mssdw;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 
 import mssdw.protocol.StackFrame_GetArgumentValue;
 import mssdw.protocol.StackFrame_GetLocalValue;
 import mssdw.protocol.StackFrame_GetThis;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 
 /**
  * @author VISTALL

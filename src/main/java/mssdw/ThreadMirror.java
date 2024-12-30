@@ -28,7 +28,7 @@ package mssdw;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 import mssdw.protocol.Thread_GetFrameInfo;
 import mssdw.protocol.Thread_GetName;
 import mssdw.protocol.Thread_GetState;

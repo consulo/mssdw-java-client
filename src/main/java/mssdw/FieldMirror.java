@@ -1,6 +1,6 @@
 package mssdw;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 
 import consulo.internal.dotnet.asm.signature.FieldAttributes;
 import mssdw.protocol.ObjectReference_GetValue;
@@ -10,7 +10,7 @@ import mssdw.protocol.Type_GetValue;
 import mssdw.protocol.Type_SetValues;
 import mssdw.util.ImmutablePair;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 
 /**
  * @author VISTALL

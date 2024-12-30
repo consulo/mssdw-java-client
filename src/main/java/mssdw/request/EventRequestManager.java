@@ -28,8 +28,8 @@ package mssdw.request;
 import java.util.Collection;
 import java.util.List;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import mssdw.DebugInformationResult;
 import mssdw.Mirror;
 import mssdw.ThreadMirror;

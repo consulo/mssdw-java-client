@@ -1,6 +1,6 @@
 package mssdw;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 import mssdw.protocol.ArrayReference_GetValue;
 import mssdw.protocol.ArrayReference_SetValues;
 

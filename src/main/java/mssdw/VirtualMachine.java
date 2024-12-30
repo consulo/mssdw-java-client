@@ -27,8 +27,8 @@ package mssdw;
 
 import java.util.List;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import mssdw.event.EventQueue;
 import mssdw.request.EventRequestManager;
 

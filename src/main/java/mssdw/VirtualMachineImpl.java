@@ -27,8 +27,8 @@ package mssdw;
 
 import java.util.List;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import mssdw.connect.spi.Connection;
 import mssdw.event.EventQueue;
 import mssdw.protocol.VirtualMachine_FindDebugOffset;

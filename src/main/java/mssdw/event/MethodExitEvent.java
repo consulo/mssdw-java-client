@@ -25,7 +25,7 @@
 
 package mssdw.event;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 import mssdw.JDWP;
 import mssdw.MethodMirror;
 import mssdw.VirtualMachine;

@@ -1,10 +1,10 @@
 package mssdw;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 
 import consulo.internal.dotnet.asm.signature.SignatureConstants;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 
 /**
  * @author VISTALL

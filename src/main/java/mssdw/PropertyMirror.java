@@ -1,10 +1,10 @@
 package mssdw;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 
 import mssdw.protocol.Type_GetPropertyCustomAttributes;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 
 /**
  * @author VISTALL
